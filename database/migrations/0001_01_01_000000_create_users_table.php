@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'warga'])->default('warga');
-            $table->string('nik', 16)->nullable();
+            $table->string('nik', 16)->unique()->nullable(); // NIK harus unique dan 16 digit
             $table->text('alamat')->nullable();
             $table->rememberToken();
             $table->timestamps();
