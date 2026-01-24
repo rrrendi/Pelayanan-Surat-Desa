@@ -1,0 +1,18 @@
+git clone https://github.com/rrrendi/Pelayanan-Surat-Desa.git
+cd Pelayanan-Surat-Desa
+composer install
+npm install
+copy .env.example .env
+php artisan key:generate
+//sesuaikan .env dan ganti dengan :
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=surat_desa
+    DB_USERNAME=root
+    DB_PASSWORD=
+php artisan migrate --seed  //php artisan migrate:fresh --seed
+php artisan storage:link
+npm run dev     //Compile untuk development
+npm run build   //ATAU untuk production
+php artisan serve
