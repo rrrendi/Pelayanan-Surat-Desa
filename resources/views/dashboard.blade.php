@@ -527,6 +527,9 @@
 }
 
 /* FIXED CUSTOM MODAL - NO BACKDROP ISSUES */
+/* ===== FIXED CUSTOM MODAL DENGAN SCROLL - Untuk Dashboard Review Modal ===== */
+
+/* Modal Container - Allow Scroll */
 .custom-modal {
     position: fixed;
     top: 0;
@@ -535,16 +538,15 @@
     bottom: 0;
     z-index: 100000 !important;
     display: none;
-    overflow-y: auto;
-    padding: 1rem;
+    overflow-y: auto; /* PENTING: Allow scroll */
+    padding: 2rem 1rem; /* Padding untuk spacing */
 }
 
 .custom-modal.show {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
+    display: block !important; /* Changed from flex to block */
 }
 
+/* Backdrop */
 .custom-modal-backdrop {
     position: fixed;
     top: 0;
@@ -552,16 +554,17 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.7);
-    z-index: 1;
+    z-index: -1; /* Behind the dialog */
     backdrop-filter: blur(4px);
 }
 
+/* Dialog Container */
 .custom-modal-dialog {
     position: relative;
     width: 100%;
     max-width: 600px;
+    margin: 0 auto; /* Center horizontally */
     z-index: 2;
-    margin: auto;
     animation: modalSlideIn 0.3s ease;
 }
 
@@ -576,16 +579,18 @@
     }
 }
 
+/* Modal Content */
 .custom-modal-content {
     background: white;
     border-radius: 20px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     overflow: hidden;
-    max-height: 90vh;
     display: flex;
     flex-direction: column;
+    margin-bottom: 2rem; /* Space at bottom */
 }
 
+/* Sticky Header */
 .modal-header {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     color: white;
@@ -594,6 +599,9 @@
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .modal-title {
@@ -626,12 +634,14 @@
     transform: rotate(90deg);
 }
 
+/* Scrollable Body */
 .modal-body {
     padding: 2rem;
-    overflow-y: auto;
+    overflow-y: visible; /* Allow natural flow */
     flex: 1;
 }
 
+/* Sticky Footer */
 .modal-footer {
     border-top: 2px solid #f1f5f9;
     padding: 1.25rem 2rem;
@@ -639,13 +649,49 @@
     gap: 1rem;
     justify-content: flex-end;
     flex-shrink: 0;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 10;
 }
 
+/* Prevent body scroll when modal open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .custom-modal {
+        padding: 1rem 0.5rem;
+    }
+    
+    .custom-modal-dialog {
+        max-width: 100%;
+        margin: 0;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        padding: 1rem 1.5rem;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+    }
+}
+
+/* IMPORTANT: Review Info Styling */
 .review-info {
     background: #f8fafc;
     border-radius: 12px;
     padding: 1rem;
     border: 2px solid #e2e8f0;
+    margin-bottom: 1.5rem;
 }
 
 .info-row {

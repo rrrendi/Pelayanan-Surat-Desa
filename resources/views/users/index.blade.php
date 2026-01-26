@@ -117,19 +117,22 @@
     </div>
 </div>
 
-<!-- MODAL EDIT -->
+<!-- MODAL EDIT - FIXED VERSION -->
 @foreach($users as $user)
-<div class="modal fade" id="editModal{{ $user->id }}" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+<div class="custom-edit-modal" id="editModal{{ $user->id }}">
+    <div class="custom-modal-backdrop" onclick="closeEditModal({{ $user->id }})"></div>
+    <div class="custom-modal-dialog">
+        <div class="custom-modal-content">
             <form method="POST" action="{{ route('users.update', $user->id) }}">
                 @csrf
                 @method('PUT')
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header">
                     <h5 class="modal-title">
                         <i class="bi bi-pencil-square"></i> Edit Data Warga
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close-custom" onclick="closeEditModal({{ $user->id }})">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -223,7 +226,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal({{ $user->id }})">
                         <i class="bi bi-x-circle"></i> Batal
                     </button>
                     <button type="submit" class="btn btn-primary">
@@ -340,15 +343,165 @@
     padding: 3rem;
     color: #64748b;
 }
-.modal-content {
-    border-radius: 12px;
-    border: none;
-}
-.modal-header {
-    border-radius: 12px 12px 0 0;
-}
 .btn-group-sm .btn {
     padding: 0.35rem 0.6rem;
+}
+
+/* ===== FIXED CUSTOM MODAL STYLES WITH SCROLL ===== */
+.custom-edit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999999 !important;
+    display: none;
+    overflow-y: auto; /* Allow scroll di modal overlay */
+    padding: 2rem 1rem; /* Padding untuk spacing */
+}
+
+.custom-edit-modal.show {
+    display: block !important; /* Changed from flex to block for better scroll */
+}
+
+.custom-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: -1; /* Behind dialog */
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.custom-modal-dialog {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto; /* Center horizontally */
+    z-index: 2;
+    animation: modalSlideIn 0.3s ease;
+    min-height: min-content; /* Ensure proper height */
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.custom-modal-content {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    max-height: none; /* Remove max-height restriction */
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem; /* Space at bottom for scroll */
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-title {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-close-custom {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.btn-close-custom:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 2rem;
+    overflow-y: visible; /* Allow natural scroll */
+    flex: 1;
+}
+
+.modal-footer {
+    border-top: 2px solid #f1f5f9;
+    padding: 1.25rem 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 10;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .custom-edit-modal {
+        padding: 1rem 0.5rem;
+    }
+    
+    .custom-modal-dialog {
+        max-width: 100%;
+        margin: 0;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+    }
 }
 </style>
 
@@ -362,11 +515,67 @@ document.getElementById('searchTable')?.addEventListener('keyup', function() {
     });
 });
 
-// Open Edit Modal
+// Open Edit Modal - FIXED
 function openEditModal(userId) {
-    const modal = new bootstrap.Modal(document.getElementById('editModal' + userId));
-    modal.show();
+    // Remove any existing Bootstrap modal backdrops
+    const existingBackdrops = document.querySelectorAll('.modal-backdrop');
+    existingBackdrops.forEach(backdrop => backdrop.remove());
+    
+    // Close any other open modals
+    const allModals = document.querySelectorAll('.custom-edit-modal');
+    allModals.forEach(modal => {
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+    });
+    
+    // Open the selected modal
+    const modal = document.getElementById('editModal' + userId);
+    if (modal) {
+        modal.classList.add('show');
+        modal.style.display = 'flex';
+        document.body.classList.add('modal-open');
+        document.body.style.overflow = 'hidden';
+    }
 }
+
+// Close Edit Modal - FIXED
+function closeEditModal(userId) {
+    const modal = document.getElementById('editModal' + userId);
+    if (modal) {
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+        
+        // Check if there are other modals open
+        const openModals = document.querySelectorAll('.custom-edit-modal.show');
+        if (openModals.length === 0) {
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+        }
+    }
+    
+    // Remove any lingering Bootstrap backdrops
+    const backdrops = document.querySelectorAll('.modal-backdrop');
+    backdrops.forEach(backdrop => backdrop.remove());
+}
+
+// Close modal on ESC key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const openModals = document.querySelectorAll('.custom-edit-modal.show');
+        openModals.forEach(modal => {
+            const modalId = modal.id.replace('editModal', '');
+            closeEditModal(modalId);
+        });
+    }
+});
+
+// Clean up on page load
+window.addEventListener('load', function() {
+    const backdrops = document.querySelectorAll('.modal-backdrop');
+    backdrops.forEach(backdrop => backdrop.remove());
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+});
 
 // Confirm Delete
 function confirmDelete(userId, userName) {

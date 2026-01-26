@@ -47,7 +47,7 @@
             background-size: 100px 100px, 60px 60px;
             background-position: 0 0, 50px 50px;
             animation: drift 40s infinite linear;
-            z-index: 0;
+            z-index: 0; /* LAYER 0: Background pattern */
             pointer-events: none;
         }
 
@@ -56,7 +56,22 @@
             to { background-position: 100px 100px, 150px 150px; }
         }
 
-        /* Modern Navbar with Village Theme */
+        /* 
+        ==========================================
+        Z-INDEX LAYERING SYSTEM (CORRECT):
+        ==========================================
+        Layer 0: Background pattern (z-index: 0)
+        Layer 1: Navbar & Footer (z-index: 1)
+        Layer 5: Content Container (z-index: 5)
+        Layer 1000: Dropdown menus (z-index: 1000)
+        Layer 999999: Modals (z-index: 999999)
+        
+        Urutan tampilan:
+        Background < Navbar/Footer < Container < Dropdown < Modals
+        ==========================================
+        */
+
+        /* Modern Navbar with Village Theme - LAYER 1 */
         .navbar-village {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(15px);
@@ -64,13 +79,8 @@
             padding: 1rem 0;
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 1 !important; /* LAYER 1: Di bawah container */
             border-bottom: 3px solid var(--gold);
-        }
-
-        /* Lower z-index when modal is open */
-        body.modal-open .navbar-village {
-            z-index: 10;
         }
 
         .navbar-brand {
@@ -198,6 +208,11 @@
             border: 2px solid var(--light-green);
         }
 
+        .dropdown {
+            position: relative;
+            z-index: 1000; /* Pastikan parent juga punya z-index tinggi */
+        }
+
         .user-avatar-nav {
             width: 36px;
             height: 36px;
@@ -220,6 +235,7 @@
             margin-top: 0.5rem;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
+            z-index: 1000 !important; /* LAYER 1000: Di atas content (5) tapi di bawah modal (999999) */
         }
 
         .dropdown-header {
@@ -252,7 +268,7 @@
             margin: 0.5rem 0;
         }
 
-        /* Content Area */
+        /* Content Area - LAYER 1 (DI BAWAH NAVBAR & FOOTER) */
         .content-wrapper {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 24px;
@@ -261,7 +277,7 @@
             margin: 2rem auto;
             max-width: 1400px;
             position: relative;
-            z-index: 1;
+            z-index: 1 !important; /* LAYER 1: Di bawah navbar dan footer */
             border: 3px solid var(--gold);
         }
 
@@ -390,7 +406,7 @@
             border-left-color: #dc3545;
         }
 
-        /* Footer */
+        /* Footer - LAYER 10 (DI ATAS CONTAINER) */
         .footer {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(15px);
@@ -398,12 +414,7 @@
             margin-top: 3rem;
             border-top: 3px solid var(--gold);
             position: relative;
-            z-index: 100;
-        }
-
-        /* Lower z-index when modal is open */
-        body.modal-open .footer {
-            z-index: 10;
+            z-index: 10 !important; /* LAYER 10: Di atas container, sejajar dengan navbar */
         }
 
         .footer-content {
@@ -493,6 +504,8 @@
             box-shadow: 0 8px 30px rgba(45, 106, 79, 0.1);
             overflow: hidden;
             background: white;
+            position: relative;
+            z-index: auto; /* Inherit from parent */
         }
 
         .card-header {
@@ -500,6 +513,8 @@
             border: none;
             padding: 1.5rem;
             color: white;
+            position: relative;
+            z-index: auto; /* Inherit from parent */
         }
 
         .card-header h5 {
