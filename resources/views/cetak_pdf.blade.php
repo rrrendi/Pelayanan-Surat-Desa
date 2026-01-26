@@ -206,12 +206,6 @@
             color: #cc0000;
             text-align: center;
         }
-
-        @media print {
-            .no-print {
-                display: none;
-            }
-        }
     </style>
 </head>
 <body>
@@ -220,10 +214,9 @@
     <div class="header-wrapper">
         <div class="kop-surat">
             <div class="logo">
-                <!-- Placeholder untuk logo, bisa diganti dengan gambar asli -->
                 <svg width="80" height="80" viewBox="0 0 80 80">
                     <circle cx="40" cy="40" r="38" fill="none" stroke="#000" stroke-width="2"/>
-                    <text x="40" y="50" font-size="40" text-anchor="middle" font-weight="bold">🏛️</text>
+                    <text x="40" y="50" font-size="40" text-anchor="middle" font-weight="bold">🏘️</text>
                 </svg>
             </div>
             <div class="kop-content">
@@ -261,27 +254,27 @@
             <tr>
                 <td>Tempat/Tanggal Lahir</td>
                 <td>:</td>
-                <td>Bandung / 01 Januari 1990</td>
+                <td>{{ $surat->user->tempat_lahir ?? '-' }} / {{ $surat->user->tanggal_lahir ? $surat->user->tanggal_lahir->format('d F Y') : '-' }}</td>
             </tr>
             <tr>
                 <td>Jenis Kelamin</td>
                 <td>:</td>
-                <td>Laki-laki</td>
+                <td>{{ $surat->user->jenis_kelamin ?? '-' }}</td>
             </tr>
             <tr>
                 <td>Pekerjaan</td>
                 <td>:</td>
-                <td>Wiraswasta</td>
+                <td>{{ $surat->user->pekerjaan ?? '-' }}</td>
             </tr>
             <tr>
                 <td>Agama</td>
                 <td>:</td>
-                <td>Islam</td>
+                <td>{{ $surat->user->agama ?? '-' }}</td>
             </tr>
             <tr>
                 <td>Status Perkawinan</td>
                 <td>:</td>
-                <td>Kawin</td>
+                <td>{{ $surat->user->status_perkawinan ?? '-' }}</td>
             </tr>
             <tr>
                 <td>Alamat</td>

@@ -17,7 +17,7 @@
 </div>
 
 <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-lg-10">
         <div class="card modern-card">
             <div class="card-body p-4">
                 @if($errors->any())
@@ -40,6 +40,7 @@
                 <form method="POST" action="{{ route('users.store') }}" id="formAddUser">
                     @csrf
 
+                    <!-- Section 1: Data Pribadi -->
                     <div class="form-section">
                         <div class="section-header">
                             <div class="section-icon">
@@ -51,15 +52,14 @@
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label-modern">
-                                <i class="bi bi-person"></i> Nama Lengkap <span class="text-danger">*</span>
-                            </label>
-                            <input type="text" name="name" class="form-control form-control-modern" 
-                                   value="{{ old('name') }}" required placeholder="Masukkan nama lengkap sesuai KTP">
-                        </div>
-
                         <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label-modern">
+                                    <i class="bi bi-person"></i> Nama Lengkap <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="name" class="form-control form-control-modern" 
+                                       value="{{ old('name') }}" required placeholder="Masukkan nama lengkap sesuai KTP">
+                            </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label-modern">
                                     <i class="bi bi-credit-card-2-front"></i> NIK <span class="text-danger">*</span>
@@ -67,13 +67,77 @@
                                 <input type="text" name="nik" id="nikInput" class="form-control form-control-modern" 
                                        value="{{ old('nik') }}" required placeholder="16 digit NIK" 
                                        maxlength="16" pattern="[0-9]{16}">
-                                <div class="nik-feedback mt-2" id="nikFeedback" style="display: none;">
-                                    <small class="text-muted">
-                                        <span id="nikCount">0</span>/16 digit
-                                    </small>
-                                </div>
                                 <div class="nik-status mt-2" id="nikStatus" style="display: none;"></div>
                             </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label-modern">
+                                    <i class="bi bi-geo-alt"></i> Tempat Lahir <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="tempat_lahir" class="form-control form-control-modern" 
+                                       value="{{ old('tempat_lahir') }}" required placeholder="Contoh: Bandung">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label-modern">
+                                    <i class="bi bi-calendar"></i> Tanggal Lahir <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" name="tanggal_lahir" class="form-control form-control-modern" 
+                                       value="{{ old('tanggal_lahir') }}" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label-modern">
+                                    <i class="bi bi-gender-ambiguous"></i> Jenis Kelamin <span class="text-danger">*</span>
+                                </label>
+                                <select name="jenis_kelamin" class="form-select form-control-modern" required>
+                                    <option value="">-- Pilih Jenis Kelamin --</option>
+                                    <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label-modern">
+                                    <i class="bi bi-bookmark"></i> Agama <span class="text-danger">*</span>
+                                </label>
+                                <select name="agama" class="form-select form-control-modern" required>
+                                    <option value="">-- Pilih Agama --</option>
+                                    <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                    <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                                    <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                                    <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                    <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                                    <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label-modern">
+                                    <i class="bi bi-briefcase"></i> Pekerjaan <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="pekerjaan" class="form-control form-control-modern" 
+                                       value="{{ old('pekerjaan') }}" required placeholder="Contoh: Wiraswasta">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label-modern">
+                                    <i class="bi bi-heart"></i> Status Perkawinan <span class="text-danger">*</span>
+                                </label>
+                                <select name="status_perkawinan" class="form-select form-control-modern" required>
+                                    <option value="">-- Pilih Status --</option>
+                                    <option value="Belum Kawin" {{ old('status_perkawinan') == 'Belum Kawin' ? 'selected' : '' }}>Belum Kawin</option>
+                                    <option value="Kawin" {{ old('status_perkawinan') == 'Kawin' ? 'selected' : '' }}>Kawin</option>
+                                    <option value="Cerai Hidup" {{ old('status_perkawinan') == 'Cerai Hidup' ? 'selected' : '' }}>Cerai Hidup</option>
+                                    <option value="Cerai Mati" {{ old('status_perkawinan') == 'Cerai Mati' ? 'selected' : '' }}>Cerai Mati</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label-modern">
                                     <i class="bi bi-envelope"></i> Email <span class="text-danger">*</span>
@@ -81,19 +145,19 @@
                                 <input type="email" name="email" class="form-control form-control-modern" 
                                        value="{{ old('email') }}" required placeholder="contoh@email.com">
                             </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label-modern">
-                                <i class="bi bi-geo-alt"></i> Alamat Lengkap <span class="text-danger">*</span>
-                            </label>
-                            <textarea name="alamat" class="form-control form-control-modern" rows="3" 
-                                      required placeholder="Jl. Nama Jalan No. X, RT/RW, Kelurahan, Kecamatan">{{ old('alamat') }}</textarea>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label-modern">
+                                    <i class="bi bi-geo-alt"></i> Alamat Lengkap <span class="text-danger">*</span>
+                                </label>
+                                <textarea name="alamat" class="form-control form-control-modern" rows="1" 
+                                          required placeholder="Jl. Nama Jalan No. X, RT/RW">{{ old('alamat') }}</textarea>
+                            </div>
                         </div>
                     </div>
 
                     <div class="section-divider"></div>
 
+                    <!-- Section 2: Akun & Keamanan -->
                     <div class="form-section">
                         <div class="section-header">
                             <div class="section-icon section-icon-primary">
@@ -151,23 +215,6 @@
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
-
-        <!-- Info Card -->
-        <div class="info-card mt-4">
-            <div class="info-card-header">
-                <i class="bi bi-info-circle-fill"></i>
-                <strong>Informasi Penting</strong>
-            </div>
-            <div class="info-card-body">
-                <p><strong>Setelah warga ditambahkan:</strong></p>
-                <ol>
-                    <li>Warga akan mendapat akses ke sistem</li>
-                    <li>Warga dapat login menggunakan email dan password yang dibuat</li>
-                    <li>Warga dapat mengajukan surat melalui sistem</li>
-                    <li>Pastikan memberitahu warga tentang kredensial login mereka</li>
-                </ol>
             </div>
         </div>
     </div>
@@ -236,7 +283,7 @@
     font-size: 0.9rem;
 }
 
-.form-control-modern {
+.form-control-modern, .form-select {
     border-radius: 10px;
     border: 2px solid #e2e8f0;
     padding: 0.75rem 1rem;
@@ -245,7 +292,7 @@
     font-size: 0.95rem;
 }
 
-.form-control-modern:focus {
+.form-control-modern:focus, .form-select:focus {
     border-color: #3b82f6;
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
     background: white;
@@ -296,42 +343,6 @@
     justify-content: flex-end;
     padding-top: 1.5rem;
     border-top: 2px solid #f1f5f9;
-}
-
-.info-card {
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.info-card-header {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
-    padding: 1rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-}
-
-.info-card-body {
-    padding: 1.5rem;
-}
-
-.info-card-body p {
-    margin-bottom: 0.75rem;
-    color: #0f172a;
-}
-
-.info-card-body ol {
-    margin: 0;
-    padding-left: 1.5rem;
-    color: #64748b;
-}
-
-.info-card-body li {
-    margin-bottom: 0.5rem;
 }
 
 .nik-status {
@@ -388,8 +399,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const nikInput = document.getElementById('nikInput');
-    const nikCount = document.getElementById('nikCount');
-    const nikFeedback = document.getElementById('nikFeedback');
     const nikStatus = document.getElementById('nikStatus');
     const passwordInput = document.getElementById('password');
     const passwordConfirmation = document.getElementById('password_confirmation');
@@ -399,14 +408,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // NIK Input Validation
     if (nikInput) {
         nikInput.addEventListener('input', function(e) {
-            // Only allow numbers
             this.value = this.value.replace(/[^0-9]/g, '');
             
             const length = this.value.length;
-            nikCount.textContent = length;
-            nikFeedback.style.display = 'block';
             
-            // Check length
             if (length === 16) {
                 checkNikAvailability(this.value);
             } else if (length > 0) {
@@ -419,7 +424,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Check NIK availability via AJAX
     function checkNikAvailability(nik) {
         fetch('/check-nik', {
             method: 'POST',
@@ -445,7 +449,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Password Match Validation
     function checkPasswordMatch() {
         if (passwordConfirmation.value.length > 0) {
             passwordMatch.style.display = 'block';
@@ -466,7 +469,6 @@ document.addEventListener('DOMContentLoaded', function() {
         passwordConfirmation.addEventListener('input', checkPasswordMatch);
     }
 
-    // Form Validation
     const form = document.getElementById('formAddUser');
     if (form) {
         form.addEventListener('submit', function(e) {
@@ -481,13 +483,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return false;
             }
 
-            if (!/^[0-9]+$/.test(nik)) {
-                e.preventDefault();
-                alert('NIK hanya boleh berisi angka!');
-                nikInput.focus();
-                return false;
-            }
-
             if (password !== passwordConf) {
                 e.preventDefault();
                 alert('Password dan konfirmasi password tidak cocok!');
@@ -495,14 +490,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return false;
             }
 
-            if (password.length < 8) {
-                e.preventDefault();
-                alert('Password minimal 8 karakter!');
-                passwordInput.focus();
-                return false;
-            }
-
-            // Show loading
             btnSubmit.disabled = true;
             btnSubmit.innerHTML = '<i class="bi bi-hourglass-split"></i> Menyimpan...';
         });

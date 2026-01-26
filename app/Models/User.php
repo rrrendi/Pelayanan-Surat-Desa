@@ -1,4 +1,5 @@
 <?php
+// app/Models/User.php
 
 namespace App\Models;
 
@@ -17,6 +18,12 @@ class User extends Authenticatable
         'role',
         'nik',
         'alamat',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'jenis_kelamin',
+        'agama',
+        'pekerjaan',
+        'status_perkawinan',
     ];
 
     protected $hidden = [
@@ -29,6 +36,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'tanggal_lahir' => 'date',
         ];
     }
 
@@ -85,6 +93,18 @@ class User extends Authenticatable
         
         // Format: XXXX-XXXX-XXXX-XXXX
         return chunk_split($this->nik, 4, '-');
+    }
+
+    /**
+     * Get formatted tempat tanggal lahir
+     */
+    public function getTempatTanggalLahirAttribute()
+    {
+        if (!$this->tempat_lahir || !$this->tanggal_lahir) {
+            return '-';
+        }
+        
+        return $this->tempat_lahir . ', ' . $this->tanggal_lahir->format('d F Y');
     }
 
     /**

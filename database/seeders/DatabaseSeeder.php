@@ -1,4 +1,5 @@
 <?php
+// database/seeders/DatabaseSeeder.php
 
 namespace Database\Seeders;
 
@@ -18,6 +19,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin123'),
             'role' => 'admin',
             'nik' => '3201010101010001',
+            'tempat_lahir' => 'Bandung',
+            'tanggal_lahir' => '1980-01-01',
+            'jenis_kelamin' => 'Laki-laki',
+            'agama' => 'Islam',
+            'pekerjaan' => 'Pegawai Negeri Sipil',
+            'status_perkawinan' => 'Kawin',
             'alamat' => 'Kantor Desa Sayati, Jl. Raya Desa No. 1'
         ]);
 
@@ -28,6 +35,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('budi123'),
             'role' => 'warga',
             'nik' => '3201010101010002',
+            'tempat_lahir' => 'Bandung',
+            'tanggal_lahir' => '1990-05-15',
+            'jenis_kelamin' => 'Laki-laki',
+            'agama' => 'Islam',
+            'pekerjaan' => 'Wiraswasta',
+            'status_perkawinan' => 'Kawin',
             'alamat' => 'Jl. Merdeka No. 123, RT 001/RW 002'
         ]);
 
@@ -38,6 +51,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('siti123'),
             'role' => 'warga',
             'nik' => '3201010101010003',
+            'tempat_lahir' => 'Bandung',
+            'tanggal_lahir' => '1992-08-20',
+            'jenis_kelamin' => 'Perempuan',
+            'agama' => 'Islam',
+            'pekerjaan' => 'Ibu Rumah Tangga',
+            'status_perkawinan' => 'Kawin',
             'alamat' => 'Jl. Sudirman No. 45, RT 003/RW 001'
         ]);
 

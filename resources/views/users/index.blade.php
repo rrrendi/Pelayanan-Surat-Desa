@@ -170,7 +170,7 @@
     </div>
 </div>
 
-<!-- View Modals - TANPA BOOTSTRAP MODAL, PAKAI DIV BIASA -->
+<!-- View Modals -->
 @foreach($users as $user)
 <div class="custom-modal" id="viewModal{{ $user->id }}" style="display: none;">
     <div class="custom-modal-backdrop" onclick="closeModal('viewModal{{ $user->id }}')"></div>
@@ -530,15 +530,20 @@
     color: #64748b;
 }
 
-/* CUSTOM MODAL STYLES - TANPA BOOTSTRAP */
+/* CUSTOM MODAL - NO BACKDROP ISSUES */
 .custom-modal {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 9999;
+    z-index: 10000;
     overflow-y: auto;
+    display: none;
+}
+
+.custom-modal.show {
+    display: block;
 }
 
 .custom-modal-backdrop {
@@ -547,15 +552,16 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     z-index: 1;
 }
 
 .custom-modal-dialog {
     position: relative;
-    margin: 1.75rem auto;
+    margin: 3rem auto;
     max-width: 500px;
     z-index: 2;
+    padding: 1rem;
     animation: modalSlideIn 0.3s ease;
 }
 
@@ -578,6 +584,7 @@
     background: white;
     border-radius: 16px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    position: relative;
 }
 
 .modern-modal .modal-header {
@@ -599,6 +606,8 @@
 
 .modern-modal .modal-body {
     padding: 2rem;
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
 }
 
 .modern-modal .modal-footer {
@@ -650,6 +659,25 @@
     text-align: right;
 }
 
+.btn-close {
+    background: transparent;
+    border: none;
+    color: white;
+    opacity: 0.8;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-close:hover {
+    opacity: 1;
+}
+
 @media (max-width: 768px) {
     .dashboard-header {
         flex-direction: column;
@@ -670,8 +698,8 @@
     }
     
     .custom-modal-dialog {
-        margin: 0.5rem;
-        max-width: calc(100% - 1rem);
+        margin: 1rem;
+        max-width: calc(100% - 2rem);
     }
 }
 </style>
@@ -708,82 +736,53 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-    
-    // Remove any leftover Bootstrap backdrops on page load
-    cleanupBackdrops();
 });
 
-// Function to open view modal
+// Modal functions - NO BACKDROP ISSUES
 function openViewModal(userId) {
     closeAllModals();
-    cleanupBackdrops();
-    
     const modal = document.getElementById('viewModal' + userId);
     if (modal) {
+        modal.classList.add('show');
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
     }
 }
 
-// Function to open edit modal
 function openEditModal(userId) {
     closeAllModals();
-    cleanupBackdrops();
-    
     const modal = document.getElementById('editModal' + userId);
     if (modal) {
+        modal.classList.add('show');
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
     }
 }
 
-// Function to close specific modal
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
+        modal.classList.remove('show');
         modal.style.display = 'none';
     }
     
-    // Check if all modals are closed
-    const allModals = document.querySelectorAll('.custom-modal');
-    const anyVisible = Array.from(allModals).some(m => m.style.display === 'block');
-    
-    if (!anyVisible) {
+    const allModals = document.querySelectorAll('.custom-modal.show');
+    if (allModals.length === 0) {
         document.body.style.overflow = '';
     }
-    
-    cleanupBackdrops();
 }
 
-// Function to close all modals
 function closeAllModals() {
     const modals = document.querySelectorAll('.custom-modal');
     modals.forEach(modal => {
+        modal.classList.remove('show');
         modal.style.display = 'none';
     });
     document.body.style.overflow = '';
-    cleanupBackdrops();
 }
 
-// Function to aggressively cleanup Bootstrap backdrops
-function cleanupBackdrops() {
-    // Remove any Bootstrap modal backdrops
-    const backdrops = document.querySelectorAll('.modal-backdrop');
-    backdrops.forEach(backdrop => {
-        backdrop.remove();
-    });
-    
-    // Remove modal-open class from body
-    document.body.classList.remove('modal-open');
-    
-    // Reset body padding
-    document.body.style.paddingRight = '';
-}
-
-// Confirm Delete Function
 function confirmDelete(userId, userName) {
     closeAllModals();
-    cleanupBackdrops();
     
     if (confirm(`Apakah Anda yakin ingin menghapus warga "${userName}"?\n\nData yang dihapus tidak dapat dikembalikan!`)) {
         const form = document.getElementById('deleteForm');
@@ -798,13 +797,5 @@ document.addEventListener('keydown', function(e) {
         closeAllModals();
     }
 });
-
-// Cleanup on page unload
-window.addEventListener('beforeunload', function() {
-    cleanupBackdrops();
-});
-
-// Periodic cleanup (setiap 1 detik cek backdrop yang tersisa)
-setInterval(cleanupBackdrops, 1000);
 </script>
 @endsection

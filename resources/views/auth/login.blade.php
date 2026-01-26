@@ -7,17 +7,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
         :root {
-            --primary: #0f172a;
-            --primary-light: #1e293b;
-            --accent: #3b82f6;
-            --accent-dark: #2563eb;
-            --success: #10b981;
-            --danger: #ef4444;
-            --light: #f8fafc;
-            --dark: #0f172a;
+            --primary-green: #2d6a4f;
+            --secondary-green: #40916c;
+            --light-green: #52b788;
+            --cream: #f8f4e8;
+            --brown: #6b4423;
+            --gold: #d4a574;
+            --dark: #1b4332;
         }
 
         * {
@@ -27,8 +26,8 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #d4f1f4 0%, #b5e7a0 50%, #95d5b2 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -37,6 +36,7 @@
             overflow-x: hidden;
         }
 
+        /* Decorative Background */
         body::before {
             content: '';
             position: absolute;
@@ -44,18 +44,27 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
-            animation: float 20s infinite linear;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 15 L60 35 L80 35 L65 50 L70 70 L50 55 L30 70 L35 50 L20 35 L40 35 Z' fill='%23ffffff' opacity='0.05'/%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='20' fill='none' stroke='%23ffffff' stroke-width='1' opacity='0.05'/%3E%3C/svg%3E");
+            background-size: 100px 100px, 60px 60px;
+            background-position: 0 0, 50px 50px;
+            animation: drift 40s infinite linear;
         }
 
-        @keyframes float {
-            from { transform: translate(0, 0); }
-            to { transform: translate(-100px, 100px); }
+        @keyframes drift {
+            from { background-position: 0 0, 50px 50px; }
+            to { background-position: 100px 100px, 150px 150px; }
+        }
+
+        /* Simplified decoration - no animation to prevent lag */
+        .leaf {
+            display: none;
         }
 
         .login-container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1100px;
             padding: 20px;
             position: relative;
             z-index: 1;
@@ -63,19 +72,20 @@
 
         .login-wrapper {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 0;
             background: white;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border-radius: 30px;
+            box-shadow: 0 30px 80px rgba(45, 106, 79, 0.3);
             overflow: hidden;
             animation: slideUp 0.6s ease;
+            border: 4px solid var(--gold);
         }
 
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -83,9 +93,10 @@
             }
         }
 
+        /* Left Side - Welcome Section */
         .login-left {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            padding: 3rem;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            padding: 3.5rem;
             color: white;
             display: flex;
             flex-direction: column;
@@ -101,208 +112,278 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-            animation: pulse 4s infinite;
+            background: radial-gradient(circle, rgba(82, 183, 136, 0.2) 0%, transparent 70%);
+            animation: pulse 6s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* Village Icon Pattern */
+        .login-left::after {
+            content: '🏘️';
+            position: absolute;
+            font-size: 15rem;
+            opacity: 0.05;
+            right: -50px;
+            bottom: -50px;
+            transform: rotate(-15deg);
+        }
+
+        .welcome-section {
+            position: relative;
+            z-index: 1;
         }
 
         .logo-section {
-            position: relative;
-            z-index: 1;
-            margin-bottom: 2rem;
+            text-align: center;
+            margin-bottom: 2.5rem;
         }
 
         .logo-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--accent);
-            border-radius: 20px;
-            display: flex;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.5rem;
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            border: 3px solid var(--gold);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         }
 
         .logo-icon i {
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             color: white;
         }
 
-        .login-left h2 {
-            font-size: 2rem;
+        .welcome-section h1 {
+            font-size: 2.5rem;
             font-weight: 800;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .login-left p {
-            font-size: 1rem;
-            opacity: 0.9;
-            line-height: 1.6;
+        .welcome-section p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
         }
 
         .features {
-            margin-top: 2rem;
-            position: relative;
-            z-index: 1;
+            display: grid;
+            gap: 1.25rem;
         }
 
         .feature-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            gap: 1.25rem;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
             backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
         }
 
         .feature-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(10px);
+            border-color: var(--gold);
         }
 
         .feature-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--accent);
-            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            background: var(--gold);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4);
         }
 
         .feature-icon i {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            color: var(--dark);
         }
 
+        .feature-content strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-content p {
+            font-size: 0.9rem;
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* Right Side - Login Form */
         .login-right {
-            padding: 3rem;
+            padding: 3.5rem 3rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
         }
 
         .login-header {
-            margin-bottom: 2rem;
+            text-align: center;
+            margin-bottom: 2.5rem;
         }
 
-        .login-header h3 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--dark);
+        .login-header h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-green);
             margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .login-header p {
-            color: #64748b;
-            font-size: 0.95rem;
+            color: var(--brown);
+            font-size: 1rem;
         }
 
-        .form-control {
-            border-radius: 12px;
-            border: 2px solid #e2e8f0;
-            padding: 0.9rem 1rem 0.9rem 3.2rem;
-            transition: all 0.3s ease;
-            background: #f8fafc;
-            font-size: 0.95rem;
+        .form-group {
+            margin-bottom: 1.5rem;
         }
 
-        .form-control:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-            background: white;
+        .form-label {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
         }
 
-        .input-group {
+        .input-wrapper {
             position: relative;
-            margin-bottom: 1.25rem;
         }
 
         .input-icon {
             position: absolute;
-            left: 1.2rem;
+            left: 1.25rem;
             top: 50%;
             transform: translateY(-50%);
-            color: #64748b;
+            color: var(--primary-green);
+            font-size: 1.2rem;
             z-index: 10;
-            font-size: 1.1rem;
+        }
+
+        .form-control {
+            border-radius: 14px;
+            border: 2px solid #e0e0e0;
+            padding: 0.95rem 1rem 0.95rem 3.5rem;
+            transition: all 0.3s ease;
+            background: white;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.1);
+            background: white;
+            outline: none;
         }
 
         .btn-login {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
             border: none;
-            border-radius: 12px;
-            padding: 1rem;
-            font-weight: 600;
+            border-radius: 14px;
+            padding: 1.1rem;
+            font-weight: 700;
             color: white;
             width: 100%;
             transition: all 0.3s ease;
-            font-size: 1rem;
+            font-size: 1.05rem;
             margin-top: 0.5rem;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 6px 20px rgba(45, 106, 79, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(45, 106, 79, 0.4);
+            background: linear-gradient(135deg, var(--secondary-green), var(--light-green));
         }
 
+        .btn-login:active {
+            transform: translateY(-1px);
+        }
+
+        /* Demo Section */
         .demo-section {
             margin-top: 2rem;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 1px solid #e2e8f0;
+            background: linear-gradient(135deg, rgba(82, 183, 136, 0.1), rgba(45, 106, 79, 0.05));
+            border-radius: 18px;
+            padding: 1.75rem;
+            border: 2px solid var(--light-green);
         }
 
         .demo-header {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            color: var(--dark);
-            font-weight: 600;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
+            gap: 0.6rem;
+            color: var(--primary-green);
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+        }
+
+        .demo-header i {
+            font-size: 1.3rem;
         }
 
         .demo-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            margin-bottom: 1.25rem;
         }
 
         .demo-tab {
-            flex: 1;
-            padding: 0.7rem;
+            padding: 0.8rem 0.5rem;
             background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .demo-tab:hover {
-            border-color: var(--accent);
-            background: #f8fafc;
+            border-color: var(--light-green);
+            background: rgba(82, 183, 136, 0.05);
+            transform: translateY(-2px);
         }
 
         .demo-tab.active {
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
             color: white;
-            border-color: var(--accent);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            border-color: var(--primary-green);
+            box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
         }
 
         .demo-content {
@@ -320,70 +401,76 @@
         }
 
         .credential-item {
-            margin-bottom: 0.8rem;
+            margin-bottom: 1rem;
         }
 
         .credential-label {
             font-size: 0.75rem;
-            color: #64748b;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
+            color: var(--brown);
+            font-weight: 700;
+            margin-bottom: 0.4rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .credential-field {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.6rem;
         }
 
         .credential-text {
             flex: 1;
             background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 0.6rem 0.8rem;
-            font-size: 0.9rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            font-size: 0.95rem;
             font-family: 'Courier New', monospace;
             color: var(--dark);
+            font-weight: 600;
             user-select: all;
             transition: all 0.2s ease;
         }
 
         .credential-text:hover {
-            border-color: var(--accent);
-            background: #f8fafc;
+            border-color: var(--light-green);
+            background: rgba(82, 183, 136, 0.05);
         }
 
         .btn-copy {
-            background: var(--accent);
-            color: white;
+            background: var(--gold);
+            color: var(--dark);
             border: none;
-            border-radius: 8px;
-            padding: 0.6rem 1rem;
-            font-size: 0.8rem;
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.3s ease;
             white-space: nowrap;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .btn-copy:hover {
-            background: var(--accent-dark);
+            background: var(--primary-green);
+            color: white;
             transform: scale(1.05);
         }
 
         .btn-copy.copied {
-            background: var(--success);
+            background: var(--secondary-green);
+            color: white;
         }
 
         .alert {
             border: none;
-            border-radius: 12px;
-            padding: 1rem;
+            border-radius: 14px;
+            padding: 1.1rem 1.3rem;
             margin-bottom: 1.5rem;
-            border-left: 4px solid;
+            border-left: 5px solid;
             animation: slideDown 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
         @keyframes slideDown {
@@ -392,26 +479,40 @@
         }
 
         .alert-danger {
-            background: #fef2f2;
-            color: var(--danger);
-            border-left-color: var(--danger);
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+            border-left-color: #dc2626;
+        }
+
+        .alert i {
+            font-size: 1.3rem;
         }
 
         @media (max-width: 992px) {
             .login-wrapper {
                 grid-template-columns: 1fr;
+                border-radius: 25px;
             }
 
             .login-left {
-                padding: 2rem;
+                padding: 2.5rem;
+                text-align: center;
+            }
+
+            .login-left::after {
+                display: none;
             }
 
             .features {
                 display: none;
             }
 
-            .login-left h2 {
-                font-size: 1.5rem;
+            .welcome-section h1 {
+                font-size: 2rem;
+            }
+
+            .login-right {
+                padding: 2.5rem 2rem;
             }
         }
 
@@ -420,59 +521,77 @@
                 padding: 2rem 1.5rem;
             }
 
-            .login-header h3 {
-                font-size: 1.5rem;
+            .login-header h2 {
+                font-size: 1.6rem;
             }
 
-            .demo-tab {
-                font-size: 0.75rem;
-                padding: 0.6rem;
+            .demo-tabs {
+                grid-template-columns: 1fr;
             }
 
-            .credential-text {
-                font-size: 0.8rem;
+            .welcome-section h1 {
+                font-size: 1.75rem;
+            }
+
+            .logo-icon {
+                width: 80px;
+                height: 80px;
+            }
+
+            .logo-icon i {
+                font-size: 2.5rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Floating Leaves -->
+    <div class="leaf">🍃</div>
+    <div class="leaf">🌿</div>
+    <div class="leaf">🍃</div>
+    <div class="leaf">🌿</div>
+    <div class="leaf">🍃</div>
+
     <div class="login-container">
         <div class="login-wrapper">
             <div class="login-left">
-                <div class="logo-section">
-                    <div class="logo-icon">
-                        <i class="bi bi-building"></i>
+                <div class="welcome-section">
+                    <div class="logo-section">
+                        <div class="logo-icon">
+                            <i class="bi bi-houses-fill"></i>
+                        </div>
                     </div>
-                    <h2>Sistem Surat Desa</h2>
-                    <p>Solusi Digital untuk Pelayanan Administrasi Desa yang Modern dan Efisien</p>
-                </div>
+                    
+                    <h1>Sistem Surat Desa</h1>
+                    <p>Solusi Digital Modern untuk Pelayanan Administrasi Desa yang Cepat, Mudah, dan Terpercaya</p>
 
-                <div class="features">
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="bi bi-lightning-charge-fill"></i>
+                    <div class="features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="bi bi-lightning-charge-fill"></i>
+                            </div>
+                            <div class="feature-content">
+                                <strong>Proses Instan</strong>
+                                <p>Pengajuan surat dalam hitungan menit</p>
+                            </div>
                         </div>
-                        <div>
-                            <strong>Proses Cepat</strong>
-                            <p style="font-size: 0.85rem; margin: 0; opacity: 0.8;">Pengajuan surat dalam hitungan menit</p>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <div class="feature-content">
+                                <strong>Aman Terpercaya</strong>
+                                <p>Data Anda terlindungi dengan enkripsi</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="bi bi-shield-check"></i>
-                        </div>
-                        <div>
-                            <strong>Aman & Terpercaya</strong>
-                            <p style="font-size: 0.85rem; margin: 0; opacity: 0.8;">Data Anda terlindungi dengan baik</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="bi bi-clock-history"></i>
-                        </div>
-                        <div>
-                            <strong>Tracking Real-time</strong>
-                            <p style="font-size: 0.85rem; margin: 0; opacity: 0.8;">Pantau status surat Anda kapan saja</p>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                            <div class="feature-content">
+                                <strong>Tracking Real-time</strong>
+                                <p>Pantau status surat kapan saja</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -480,51 +599,68 @@
 
             <div class="login-right">
                 <div class="login-header">
-                    <h3>Selamat Datang! 👋</h3>
-                    <p>Silakan login untuk melanjutkan ke dashboard</p>
+                    <h2>
+                        <i class="bi bi-door-open-fill"></i>
+                        Selamat Datang
+                    </h2>
+                    <p>Silakan login untuk melanjutkan</p>
                 </div>
 
                 @if($errors->any())
-                <div class="alert alert-danger alert-dismissible fade show">
+                <div class="alert alert-danger">
                     <i class="bi bi-exclamation-triangle-fill"></i>
-                    <strong>Login Gagal!</strong>
-                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">{{ $errors->first() }}</p>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <div>
+                        <strong>Login Gagal!</strong><br>
+                        <small>{{ $errors->first() }}</small>
+                    </div>
                 </div>
                 @endif
 
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
-                    <div class="input-group">
-                        <i class="bi bi-envelope-fill input-icon"></i>
-                        <input type="email" name="email" class="form-control" placeholder="Email Address" value="{{ old('email') }}" required autofocus>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="bi bi-envelope-fill"></i>
+                            Email Address
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="bi bi-envelope-fill input-icon"></i>
+                            <input type="email" name="email" class="form-control" placeholder="nama@email.com" value="{{ old('email') }}" required autofocus>
+                        </div>
                     </div>
 
-                    <div class="input-group">
-                        <i class="bi bi-lock-fill input-icon"></i>
-                        <input type="password" name="password" class="form-control" placeholder="Password" required>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="bi bi-lock-fill"></i>
+                            Password
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="bi bi-lock-fill input-icon"></i>
+                            <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-login">
-                        <i class="bi bi-box-arrow-in-right"></i> Login to Dashboard
+                    <button type="submit" class="btn-login">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Masuk ke Dashboard
                     </button>
                 </form>
 
                 <div class="demo-section">
                     <div class="demo-header">
                         <i class="bi bi-key-fill"></i>
-                        Demo Accounts
+                        Akun Demo
                     </div>
 
                     <div class="demo-tabs">
                         <div class="demo-tab active" onclick="switchTab('admin')">
-                            <i class="bi bi-shield-check"></i> Admin
+                            <i class="bi bi-shield-check"></i><br>Admin
                         </div>
                         <div class="demo-tab" onclick="switchTab('warga1')">
-                            <i class="bi bi-person"></i> Warga 1
+                            <i class="bi bi-person"></i><br>Warga 1
                         </div>
                         <div class="demo-tab" onclick="switchTab('warga2')">
-                            <i class="bi bi-person"></i> Warga 2
+                            <i class="bi bi-person"></i><br>Warga 2
                         </div>
                     </div>
 
@@ -534,7 +670,7 @@
                             <div class="credential-field">
                                 <span class="credential-text" id="adminEmail">admin@desa.com</span>
                                 <button class="btn-copy" onclick="copyText('adminEmail', this)">
-                                    <i class="bi bi-clipboard"></i> Copy
+                                    <i class="bi bi-clipboard"></i>
                                 </button>
                             </div>
                         </div>
@@ -543,7 +679,7 @@
                             <div class="credential-field">
                                 <span class="credential-text" id="adminPass">admin123</span>
                                 <button class="btn-copy" onclick="copyText('adminPass', this)">
-                                    <i class="bi bi-clipboard"></i> Copy
+                                    <i class="bi bi-clipboard"></i>
                                 </button>
                             </div>
                         </div>
@@ -555,7 +691,7 @@
                             <div class="credential-field">
                                 <span class="credential-text" id="warga1Email">budi@gmail.com</span>
                                 <button class="btn-copy" onclick="copyText('warga1Email', this)">
-                                    <i class="bi bi-clipboard"></i> Copy
+                                    <i class="bi bi-clipboard"></i>
                                 </button>
                             </div>
                         </div>
@@ -564,7 +700,7 @@
                             <div class="credential-field">
                                 <span class="credential-text" id="warga1Pass">budi123</span>
                                 <button class="btn-copy" onclick="copyText('warga1Pass', this)">
-                                    <i class="bi bi-clipboard"></i> Copy
+                                    <i class="bi bi-clipboard"></i>
                                 </button>
                             </div>
                         </div>
@@ -576,7 +712,7 @@
                             <div class="credential-field">
                                 <span class="credential-text" id="warga2Email">siti@gmail.com</span>
                                 <button class="btn-copy" onclick="copyText('warga2Email', this)">
-                                    <i class="bi bi-clipboard"></i> Copy
+                                    <i class="bi bi-clipboard"></i>
                                 </button>
                             </div>
                         </div>
@@ -585,7 +721,7 @@
                             <div class="credential-field">
                                 <span class="credential-text" id="warga2Pass">siti123</span>
                                 <button class="btn-copy" onclick="copyText('warga2Pass', this)">
-                                    <i class="bi bi-clipboard"></i> Copy
+                                    <i class="bi bi-clipboard"></i>
                                 </button>
                             </div>
                         </div>
@@ -595,7 +731,6 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function switchTab(tab) {
             document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
@@ -607,18 +742,51 @@
 
         function copyText(elementId, button) {
             const textElement = document.getElementById(elementId);
-            const text = textElement.textContent;
+            const text = textElement.textContent.trim();
 
-            navigator.clipboard.writeText(text).then(() => {
+            // Fallback for older browsers
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalHTML = button.innerHTML;
+                    button.innerHTML = '<i class="bi bi-check2"></i>';
+                    button.classList.add('copied');
+
+                    setTimeout(() => {
+                        button.innerHTML = originalHTML;
+                        button.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Copy failed:', err);
+                    fallbackCopy(text, button);
+                });
+            } else {
+                fallbackCopy(text, button);
+            }
+        }
+
+        function fallbackCopy(text, button) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
                 const originalHTML = button.innerHTML;
-                button.innerHTML = '<i class="bi bi-check2"></i> Copied!';
+                button.innerHTML = '<i class="bi bi-check2"></i>';
                 button.classList.add('copied');
 
                 setTimeout(() => {
                     button.innerHTML = originalHTML;
                     button.classList.remove('copied');
                 }, 2000);
-            });
+            } catch (err) {
+                alert('Gagal menyalin: ' + text);
+            }
+            
+            document.body.removeChild(textarea);
         }
     </script>
 </body>
