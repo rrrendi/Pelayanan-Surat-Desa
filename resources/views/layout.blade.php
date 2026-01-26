@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Sistem Pelayanan Surat Desa')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
@@ -33,7 +34,6 @@
             z-index: 0;
         }
 
-        /* Navbar Styles */
         .navbar-modern {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -161,7 +161,6 @@
             transform: translateX(3px);
         }
 
-        /* Content Wrapper */
         .content-wrapper {
             background: white;
             border-radius: 20px;
@@ -173,7 +172,6 @@
             z-index: 1;
         }
 
-        /* Page Title */
         .page-title {
             font-size: 1.75rem;
             font-weight: 800;
@@ -188,7 +186,6 @@
             color: #3b82f6;
         }
 
-        /* Buttons */
         .btn {
             border-radius: 10px;
             padding: 0.7rem 1.5rem;
@@ -264,7 +261,6 @@
             background: #f1f5f9;
         }
 
-        /* Card */
         .card {
             border: none;
             border-radius: 16px;
@@ -288,7 +284,6 @@
             gap: 0.5rem;
         }
 
-        /* Alerts */
         .alert {
             border: none;
             border-radius: 12px;
@@ -327,7 +322,6 @@
             border-left-color: #f59e0b;
         }
 
-        /* Footer */
         .footer {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -363,7 +357,6 @@
             color: #3b82f6;
         }
 
-        /* Responsive */
         @media (max-width: 992px) {
             .content-wrapper {
                 padding: 1.5rem;
@@ -400,7 +393,6 @@
             }
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
         }
@@ -418,7 +410,6 @@
             background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
         }
 
-        /* Loading Animation */
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -543,14 +534,20 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Auto-hide alerts after 5 seconds
         document.addEventListener('DOMContentLoaded', function() {
+            // Auto-hide alerts
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
-                setTimeout(() => {
-                    const bsAlert = new bootstrap.Alert(alert);
-                    bsAlert.close();
+                const timeoutId = setTimeout(() => {
+                    if (document.body.contains(alert)) {
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    }
                 }, 5000);
+                
+                alert.addEventListener('closed.bs.alert', () => {
+                    clearTimeout(timeoutId);
+                });
             });
         });
     </script>
