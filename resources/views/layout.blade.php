@@ -68,6 +68,11 @@
             border-bottom: 3px solid var(--gold);
         }
 
+        /* Lower z-index when modal is open */
+        body.modal-open .navbar-village {
+            z-index: 10;
+        }
+
         .navbar-brand {
             font-weight: 700;
             font-size: 1.4rem;
@@ -85,15 +90,22 @@
         .brand-logo {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            background: white;
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 1.5rem;
             box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
             position: relative;
+            overflow: hidden;
+            border: 3px solid var(--gold);
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 2px;
         }
 
         .brand-logo::after {
@@ -386,7 +398,12 @@
             margin-top: 3rem;
             border-top: 3px solid var(--gold);
             position: relative;
-            z-index: 1;
+            z-index: 100;
+        }
+
+        /* Lower z-index when modal is open */
+        body.modal-open .footer {
+            z-index: 10;
         }
 
         .footer-content {
@@ -405,13 +422,19 @@
         .footer-logo {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            background: white;
             border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 2rem;
+            border: 3px solid var(--gold);
+            padding: 5px;
+        }
+
+        .footer-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .footer-text {
@@ -513,7 +536,6 @@
             .brand-logo {
                 width: 42px;
                 height: 42px;
-                font-size: 1.3rem;
             }
 
             .content-wrapper {
@@ -556,7 +578,8 @@
         <div class="container">
             <a class="navbar-brand" href="{{ route('dashboard') }}">
                 <div class="brand-logo">
-                    <i class="bi bi-houses-fill"></i>
+                    <img src="{{ asset('images/logokap.png') }}" alt="Logo Desa" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <i class="bi bi-houses-fill" style="display: none;"></i>
                 </div>
                 <div class="brand-text">
                     <span class="brand-name">Sistem Surat Desa</span>
@@ -644,7 +667,7 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <div class="footer-logo">
-                        <i class="bi bi-houses-fill"></i>
+                        <img src="{{ asset('images/logokap.png') }}" alt="Logo Desa" onerror="this.style.display='none';">
                     </div>
                     <div class="footer-text">
                         <h4>Sistem Surat Desa</h4>

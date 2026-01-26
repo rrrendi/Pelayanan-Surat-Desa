@@ -164,7 +164,7 @@
                         <td>
                             @if(Auth::user()->role === 'admin')
                                 @if($item->status == 'pending')
-                                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalStatus{{ $item->id }}">
+                                <button class="btn btn-sm btn-success" onclick="openReviewModal({{ $item->id }})">
                                     <i class="bi bi-pencil-square"></i> Review
                                 </button>
                                 @endif
@@ -211,12 +211,14 @@
     </div>
 </div>
 
+<!-- Review Modals - FIXED VERSION -->
 @if(Auth::user()->role === 'admin')
     @foreach($surat as $item)
         @if($item->status == 'pending')
-        <div class="modal fade" id="modalStatus{{ $item->id }}" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content modern-modal">
+        <div class="custom-modal" id="reviewModal{{ $item->id }}">
+            <div class="custom-modal-backdrop" onclick="closeReviewModal({{ $item->id }})"></div>
+            <div class="custom-modal-dialog">
+                <div class="custom-modal-content">
                     <form method="POST" action="{{ route('surat.updateStatus', $item->id) }}">
                         @csrf
                         <div class="modal-header">
@@ -224,7 +226,9 @@
                                 <i class="bi bi-pencil-square"></i>
                                 Review Pengajuan Surat
                             </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <button type="button" class="btn-close-custom" onclick="closeReviewModal({{ $item->id }})">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
                         </div>
                         <div class="modal-body">
                             <div class="review-info">
@@ -267,7 +271,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <button type="button" class="btn btn-secondary" onclick="closeReviewModal({{ $item->id }})">
                                 <i class="bi bi-x-circle"></i> Batal
                             </button>
                             <button type="submit" class="btn btn-primary">
@@ -522,16 +526,126 @@
     color: #64748b;
 }
 
-.modern-modal .modal-header {
+/* FIXED CUSTOM MODAL - NO BACKDROP ISSUES */
+.custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100000 !important;
+    display: none;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.custom-modal.show {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+    backdrop-filter: blur(4px);
+}
+
+.custom-modal-dialog {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    z-index: 2;
+    margin: auto;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.custom-modal-content {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     color: white;
-    border-radius: 16px 16px 0 0;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.modal-title {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-close-custom {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.btn-close-custom:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 2rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-footer {
+    border-top: 2px solid #f1f5f9;
+    padding: 1.25rem 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    flex-shrink: 0;
 }
 
 .review-info {
     background: #f8fafc;
     border-radius: 12px;
     padding: 1rem;
+    border: 2px solid #e2e8f0;
 }
 
 .info-row {
@@ -555,11 +669,19 @@
     color: #0f172a;
     font-weight: 500;
     font-size: 0.9rem;
+    text-align: right;
+    max-width: 60%;
+    word-wrap: break-word;
 }
 
 .card-actions input {
     border-radius: 8px;
     border: 2px solid #e2e8f0;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
 }
 
 @media (max-width: 768px) {
@@ -576,18 +698,102 @@
     .table-modern {
         font-size: 0.85rem;
     }
+    
+    .custom-modal-dialog {
+        max-width: calc(100% - 2rem);
+        margin: 1rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+    }
 }
 </style>
 
 <script>
-document.getElementById('searchTable')?.addEventListener('keyup', function() {
-    const value = this.value.toLowerCase();
-    const rows = document.querySelectorAll('#suratTable tbody tr');
+document.addEventListener('DOMContentLoaded', function() {
+    // Search Functionality
+    const searchInput = document.getElementById('searchTable');
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+            const value = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#suratTable tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(value) ? '' : 'none';
+            });
+        });
+    }
+});
+
+// Modal functions - COMPLETELY FIXED
+function openReviewModal(itemId) {
+    // Remove any existing Bootstrap modal backdrops
+    const existingBackdrops = document.querySelectorAll('.modal-backdrop');
+    existingBackdrops.forEach(backdrop => backdrop.remove());
     
-    rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(value) ? '' : 'none';
+    // Close any other open modals
+    const allModals = document.querySelectorAll('.custom-modal');
+    allModals.forEach(modal => {
+        modal.classList.remove('show');
+        modal.style.display = 'none';
     });
+    
+    // Open the selected modal
+    const modal = document.getElementById('reviewModal' + itemId);
+    if (modal) {
+        modal.classList.add('show');
+        modal.style.display = 'flex';
+        document.body.classList.add('modal-open');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeReviewModal(itemId) {
+    const modal = document.getElementById('reviewModal' + itemId);
+    if (modal) {
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+        
+        // Check if there are other modals open
+        const openModals = document.querySelectorAll('.custom-modal.show');
+        if (openModals.length === 0) {
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+        }
+    }
+    
+    // Remove any lingering Bootstrap backdrops
+    const backdrops = document.querySelectorAll('.modal-backdrop');
+    backdrops.forEach(backdrop => backdrop.remove());
+}
+
+// Close modal on ESC key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const openModals = document.querySelectorAll('.custom-modal.show');
+        openModals.forEach(modal => {
+            const modalId = modal.id.replace('reviewModal', '');
+            closeReviewModal(modalId);
+        });
+    }
+});
+
+// Clean up any Bootstrap modal remnants on page load
+window.addEventListener('load', function() {
+    const backdrops = document.querySelectorAll('.modal-backdrop');
+    backdrops.forEach(backdrop => backdrop.remove());
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
 });
 </script>
 @endsection
