@@ -968,7 +968,7 @@
                     <a href="https://sayati.desa.id/index.php/artikel/2018/1/9/profil-desa-sayati" class="footer-link">
                         <i class="bi bi-shield-check"></i> Kebijakan Privasi
                     </a>
-                    <a href="wa.me/6283836888962" class="footer-link">
+                    <a href="https://wa.me/6283836888962" class="footer-link">
                         <i class="bi bi-envelope"></i> Kontak
                     </a>
                 </div>
