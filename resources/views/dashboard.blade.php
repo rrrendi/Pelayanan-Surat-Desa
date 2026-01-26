@@ -211,81 +211,6 @@
     </div>
 </div>
 
-<!-- Review Modals - FIXED VERSION -->
-@if(Auth::user()->role === 'admin')
-    @foreach($surat as $item)
-        @if($item->status == 'pending')
-        <div class="custom-modal" id="reviewModal{{ $item->id }}">
-            <div class="custom-modal-backdrop" onclick="closeReviewModal({{ $item->id }})"></div>
-            <div class="custom-modal-dialog">
-                <div class="custom-modal-content">
-                    <form method="POST" action="{{ route('surat.updateStatus', $item->id) }}">
-                        @csrf
-                        <div class="modal-header">
-                            <h5 class="modal-title">
-                                <i class="bi bi-pencil-square"></i>
-                                Review Pengajuan Surat
-                            </h5>
-                            <button type="button" class="btn-close-custom" onclick="closeReviewModal({{ $item->id }})">
-                                <i class="bi bi-x-lg"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="review-info">
-                                <div class="info-row">
-                                    <span class="info-label">Pemohon</span>
-                                    <span class="info-value">{{ $item->user->name }}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">NIK</span>
-                                    <span class="info-value">{{ $item->user->nik }}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Jenis Surat</span>
-                                    <span class="info-value">{{ $item->suratJenis->nama_surat }}</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Keterangan</span>
-                                    <span class="info-value">{{ $item->keterangan }}</span>
-                                </div>
-                            </div>
-
-                            <hr class="my-4">
-
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    <i class="bi bi-check-square"></i> Status Keputusan <span class="text-danger">*</span>
-                                </label>
-                                <select name="status" class="form-select" required>
-                                    <option value="">-- Pilih Status --</option>
-                                    <option value="disetujui">✓ Disetujui</option>
-                                    <option value="ditolak">✗ Ditolak</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">
-                                    <i class="bi bi-chat-left-text"></i> Catatan Admin
-                                </label>
-                                <textarea name="catatan_admin" class="form-control" rows="3" placeholder="Tambahkan catatan atau alasan jika diperlukan..."></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" onclick="closeReviewModal({{ $item->id }})">
-                                <i class="bi bi-x-circle"></i> Batal
-                            </button>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle"></i> Simpan Keputusan
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        @endif
-    @endforeach
-@endif
-
 <style>
 .dashboard-header {
     display: flex;
@@ -526,44 +451,387 @@
     color: #64748b;
 }
 
-/* FIXED CUSTOM MODAL - NO BACKDROP ISSUES */
-/* ===== FIXED CUSTOM MODAL DENGAN SCROLL - Untuk Dashboard Review Modal ===== */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
 
-/* Modal Container - Allow Scroll */
+    .page-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+        padding: 1.25rem;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.5rem;
+        margin-bottom: 0.85rem;
+    }
+
+    .stat-number {
+        font-size: 1.75rem;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+    }
+
+    .stat-badge {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.65rem;
+        margin-top: 0.85rem;
+    }
+
+    .table-modern {
+        font-size: 0.85rem;
+    }
+
+    .table-modern thead th {
+        padding: 0.85rem;
+        font-size: 0.75rem;
+    }
+
+    .table-modern tbody td {
+        padding: 0.85rem;
+    }
+
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+
+    .user-name {
+        font-size: 0.85rem;
+    }
+
+    .user-email {
+        font-size: 0.75rem;
+    }
+
+    .badge-modern {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.75rem;
+    }
+
+    .date-display {
+        font-size: 0.85rem;
+    }
+
+    .time-display {
+        font-size: 0.7rem;
+    }
+
+    .btn-sm {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .empty-state {
+        padding: 3rem 1.5rem;
+    }
+
+    .empty-icon i {
+        font-size: 4rem;
+    }
+
+    .empty-state h3 {
+        font-size: 1.25rem;
+    }
+
+    .empty-state p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-header {
+        margin-bottom: 1.25rem;
+    }
+
+    .page-title {
+        font-size: 1.15rem;
+    }
+
+    .page-subtitle {
+        font-size: 0.8rem;
+    }
+
+    .btn-lg {
+        padding: 0.65rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .stats-grid {
+        gap: 0.85rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+        border-radius: 10px;
+    }
+
+    .stat-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.35rem;
+        margin-bottom: 0.75rem;
+        border-radius: 10px;
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    .stat-badge {
+        font-size: 0.65rem;
+        padding: 0.25rem 0.6rem;
+        margin-top: 0.75rem;
+    }
+
+    .card-header {
+        padding: 0.85rem;
+    }
+
+    .card-header h5 {
+        font-size: 0.9rem;
+    }
+
+    .card-actions input {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .table-modern {
+        font-size: 0.8rem;
+    }
+
+    .table-modern thead th {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    .table-modern tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .user-info {
+        gap: 0.5rem;
+    }
+
+    .user-avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+
+    .user-name {
+        font-size: 0.8rem;
+    }
+
+    .user-email {
+        font-size: 0.7rem;
+    }
+
+    .surat-type {
+        font-size: 0.8rem;
+        gap: 0.4rem;
+    }
+
+    .surat-type i {
+        font-size: 0.9rem;
+    }
+
+    .badge-modern {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.7rem;
+        border-radius: 6px;
+    }
+
+    .date-display {
+        font-size: 0.8rem;
+    }
+
+    .time-display {
+        font-size: 0.65rem;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.45rem;
+        font-size: 0.75rem;
+    }
+
+    .empty-state {
+        padding: 2.5rem 1rem;
+    }
+
+    .empty-icon i {
+        font-size: 3.5rem;
+    }
+
+    .empty-state h3 {
+        font-size: 1.15rem;
+    }
+
+    .empty-state p {
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile Table Optimization */
+@media (max-width: 768px) {
+    .table-responsive {
+        border-radius: 0;
+    }
+
+    .table-modern {
+        min-width: 100%;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+</style>
+@endsection
+
+{{-- ============================================
+     MODAL REVIEW - DI LUAR @section('content')
+     Modal akan di-render SETELAH footer
+     z-index: 999999 (paling depan)
+     ============================================ --}}
+@section('modals')
+@if(Auth::user()->role === 'admin')
+    @foreach($surat as $item)
+        @if($item->status == 'pending')
+        <div class="custom-modal" id="reviewModal{{ $item->id }}">
+            <div class="custom-modal-backdrop" onclick="closeReviewModal({{ $item->id }})"></div>
+            <div class="custom-modal-dialog">
+                <div class="custom-modal-content">
+                    <form method="POST" action="{{ route('surat.updateStatus', $item->id) }}">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <i class="bi bi-pencil-square"></i>
+                                Review Pengajuan Surat
+                            </h5>
+                            <button type="button" class="btn-close-custom" onclick="closeReviewModal({{ $item->id }})">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="review-info">
+                                <div class="info-row">
+                                    <span class="info-label">Pemohon</span>
+                                    <span class="info-value">{{ $item->user->name }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">NIK</span>
+                                    <span class="info-value">{{ $item->user->nik }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Jenis Surat</span>
+                                    <span class="info-value">{{ $item->suratJenis->nama_surat }}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Keterangan</span>
+                                    <span class="info-value">{{ $item->keterangan }}</span>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="bi bi-check-square"></i> Status Keputusan <span class="text-danger">*</span>
+                                </label>
+                                <select name="status" class="form-select" required>
+                                    <option value="">-- Pilih Status --</option>
+                                    <option value="disetujui">✓ Disetujui</option>
+                                    <option value="ditolak">✗ Ditolak</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="bi bi-chat-left-text"></i> Catatan Admin
+                                </label>
+                                <textarea name="catatan_admin" class="form-control" rows="3" placeholder="Tambahkan catatan atau alasan jika diperlukan..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeReviewModal({{ $item->id }})">
+                                <i class="bi bi-x-circle"></i> Batal
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Simpan Keputusan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
+    @endforeach
+@endif
+
+<style>
+/* ===== MODAL REVIEW STYLES - z-index: 999999 (PALING DEPAN) ===== */
 .custom-modal {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 100000 !important;
+    z-index: 999999 !important;
     display: none;
-    overflow-y: auto; /* PENTING: Allow scroll */
-    padding: 2rem 1rem; /* Padding untuk spacing */
+    overflow-y: auto;
+    padding: 2rem 1rem;
 }
 
 .custom-modal.show {
-    display: block !important; /* Changed from flex to block */
+    display: block !important;
 }
 
-/* Backdrop */
 .custom-modal-backdrop {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: -1; /* Behind the dialog */
+    background: rgba(0, 0, 0, 0.75);
+    z-index: -1;
     backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
 }
 
-/* Dialog Container */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .custom-modal-dialog {
     position: relative;
     width: 100%;
     max-width: 600px;
-    margin: 0 auto; /* Center horizontally */
+    margin: 0 auto;
     z-index: 2;
     animation: modalSlideIn 0.3s ease;
 }
@@ -579,7 +847,6 @@
     }
 }
 
-/* Modal Content */
 .custom-modal-content {
     background: white;
     border-radius: 20px;
@@ -587,10 +854,9 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    margin-bottom: 2rem; /* Space at bottom */
+    margin-bottom: 2rem;
 }
 
-/* Sticky Header */
 .modal-header {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     color: white;
@@ -634,14 +900,12 @@
     transform: rotate(90deg);
 }
 
-/* Scrollable Body */
 .modal-body {
     padding: 2rem;
-    overflow-y: visible; /* Allow natural flow */
+    overflow-y: visible;
     flex: 1;
 }
 
-/* Sticky Footer */
 .modal-footer {
     border-top: 2px solid #f1f5f9;
     padding: 1.25rem 2rem;
@@ -655,37 +919,6 @@
     z-index: 10;
 }
 
-/* Prevent body scroll when modal open */
-body.modal-open {
-    overflow: hidden;
-}
-
-/* Mobile Optimization */
-@media (max-width: 768px) {
-    .custom-modal {
-        padding: 1rem 0.5rem;
-    }
-    
-    .custom-modal-dialog {
-        max-width: 100%;
-        margin: 0;
-    }
-    
-    .modal-body {
-        padding: 1.5rem;
-    }
-    
-    .modal-footer {
-        flex-direction: column;
-        padding: 1rem 1.5rem;
-    }
-    
-    .modal-footer .btn {
-        width: 100%;
-    }
-}
-
-/* IMPORTANT: Review Info Styling */
 .review-info {
     background: #f8fafc;
     border-radius: 12px;
@@ -720,34 +953,18 @@ body.modal-open {
     word-wrap: break-word;
 }
 
-.card-actions input {
-    border-radius: 8px;
-    border: 2px solid #e2e8f0;
-}
-
-/* Prevent body scroll when modal is open */
 body.modal-open {
     overflow: hidden;
 }
 
 @media (max-width: 768px) {
-    .dashboard-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .table-modern {
-        font-size: 0.85rem;
+    .custom-modal {
+        padding: 1rem 0.5rem;
     }
     
     .custom-modal-dialog {
-        max-width: calc(100% - 2rem);
-        margin: 1rem;
+        max-width: 100%;
+        margin: 0;
     }
     
     .modal-body {
@@ -756,6 +973,7 @@ body.modal-open {
     
     .modal-footer {
         flex-direction: column;
+        padding: 1rem 1.5rem;
     }
     
     .modal-footer .btn {
@@ -763,7 +981,9 @@ body.modal-open {
     }
 }
 </style>
+@endsection
 
+@section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Search Functionality
@@ -781,7 +1001,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Modal functions - COMPLETELY FIXED
+// Open Review Modal
 function openReviewModal(itemId) {
     // Remove any existing Bootstrap modal backdrops
     const existingBackdrops = document.querySelectorAll('.modal-backdrop');
@@ -798,12 +1018,12 @@ function openReviewModal(itemId) {
     const modal = document.getElementById('reviewModal' + itemId);
     if (modal) {
         modal.classList.add('show');
-        modal.style.display = 'flex';
+        modal.style.display = 'block';
         document.body.classList.add('modal-open');
-        document.body.style.overflow = 'hidden';
     }
 }
 
+// Close Review Modal
 function closeReviewModal(itemId) {
     const modal = document.getElementById('reviewModal' + itemId);
     if (modal) {
@@ -814,7 +1034,6 @@ function closeReviewModal(itemId) {
         const openModals = document.querySelectorAll('.custom-modal.show');
         if (openModals.length === 0) {
             document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
         }
     }
     
@@ -839,7 +1058,6 @@ window.addEventListener('load', function() {
     const backdrops = document.querySelectorAll('.modal-backdrop');
     backdrops.forEach(backdrop => backdrop.remove());
     document.body.classList.remove('modal-open');
-    document.body.style.overflow = '';
 });
 </script>
 @endsection

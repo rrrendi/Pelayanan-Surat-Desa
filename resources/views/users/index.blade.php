@@ -117,7 +117,44 @@
     </div>
 </div>
 
-<!-- MODAL EDIT - FIXED VERSION -->
+<!-- Delete Form -->
+<form id="deleteForm" method="POST" style="display: none;">
+    @csrf
+    @method('DELETE')
+</form>
+
+<style>
+.dashboard-header { margin-bottom: 2rem; }
+.page-title { font-size: 1.8rem; font-weight: bold; color: #0f172a; }
+.page-subtitle { color: #64748b; margin: 0.5rem 0 0.25rem 0; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.stat-card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.3s ease; }
+.stat-card:hover { transform: translateY(-4px); }
+.stat-icon { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem; }
+.stat-info .stat-icon { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+.stat-success .stat-icon { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+.stat-warning .stat-icon { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+.stat-number { font-size: 2rem; font-weight: bold; color: #0f172a; }
+.stat-label { color: #64748b; font-weight: 500; }
+.modern-card { border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 12px; overflow: hidden; }
+.card-header { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; padding: 1.25rem; }
+.table-modern { margin: 0; }
+.table-modern thead { background: #f8fafc; color: #0f172a; }
+.table-modern thead th { font-weight: 600; font-size: 0.85rem; text-transform: uppercase; padding: 1rem; }
+.table-modern tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.2s ease; }
+.table-modern tbody tr:hover { background: #f8fafc; }
+.table-modern tbody td { padding: 1rem; }
+.empty-state { text-align: center; padding: 3rem; color: #64748b; }
+.btn-group-sm .btn { padding: 0.35rem 0.6rem; }
+</style>
+@endsection
+
+{{-- ============================================
+     MODAL SECTION - DI LUAR @section('content')
+     Modal ini akan di-render SETELAH footer
+     z-index: 999999 (paling depan)
+     ============================================ --}}
+@section('modals')
 @foreach($users as $user)
 <div class="custom-edit-modal" id="editModal{{ $user->id }}">
     <div class="custom-modal-backdrop" onclick="closeEditModal({{ $user->id }})"></div>
@@ -239,115 +276,8 @@
 </div>
 @endforeach
 
-<!-- Delete Form -->
-<form id="deleteForm" method="POST" style="display: none;">
-    @csrf
-    @method('DELETE')
-</form>
-
 <style>
-.dashboard-header { 
-    margin-bottom: 2rem; 
-}
-.page-title { 
-    font-size: 1.8rem; 
-    font-weight: bold; 
-    color: #0f172a;
-}
-.page-subtitle { 
-    color: #64748b; 
-    margin: 0.5rem 0 0.25rem 0;
-}
-.stats-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-    gap: 1rem; 
-}
-.stat-card { 
-    background: white; 
-    padding: 1.5rem; 
-    border-radius: 12px; 
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-}
-.stat-card:hover {
-    transform: translateY(-4px);
-}
-.stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-}
-.stat-info .stat-icon {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-}
-.stat-success .stat-icon {
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-}
-.stat-warning .stat-icon {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: white;
-}
-.stat-number { 
-    font-size: 2rem; 
-    font-weight: bold; 
-    color: #0f172a;
-}
-.stat-label { 
-    color: #64748b;
-    font-weight: 500;
-}
-.modern-card { 
-    border: none; 
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border-radius: 12px;
-    overflow: hidden;
-}
-.card-header {
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    color: white;
-    padding: 1.25rem;
-}
-.table-modern { 
-    margin: 0; 
-}
-.table-modern thead { 
-    background: #f8fafc;
-    color: #0f172a;
-}
-.table-modern thead th {
-    font-weight: 600;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    padding: 1rem;
-}
-.table-modern tbody tr {
-    border-bottom: 1px solid #f1f5f9;
-    transition: background 0.2s ease;
-}
-.table-modern tbody tr:hover {
-    background: #f8fafc;
-}
-.table-modern tbody td {
-    padding: 1rem;
-}
-.empty-state { 
-    text-align: center; 
-    padding: 3rem;
-    color: #64748b;
-}
-.btn-group-sm .btn {
-    padding: 0.35rem 0.6rem;
-}
-
-/* ===== FIXED CUSTOM MODAL STYLES WITH SCROLL ===== */
+/* MODAL STYLES - z-index: 999999 (PALING DEPAN) */
 .custom-edit-modal {
     position: fixed;
     top: 0;
@@ -356,12 +286,12 @@
     bottom: 0;
     z-index: 999999 !important;
     display: none;
-    overflow-y: auto; /* Allow scroll di modal overlay */
-    padding: 2rem 1rem; /* Padding untuk spacing */
+    overflow-y: auto;
+    padding: 2rem 1rem;
 }
 
 .custom-edit-modal.show {
-    display: block !important; /* Changed from flex to block for better scroll */
+    display: block !important;
 }
 
 .custom-modal-backdrop {
@@ -371,35 +301,22 @@
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.75);
-    z-index: -1; /* Behind dialog */
+    z-index: -1;
     backdrop-filter: blur(4px);
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
 }
 
 .custom-modal-dialog {
     position: relative;
     width: 100%;
     max-width: 700px;
-    margin: 0 auto; /* Center horizontally */
+    margin: 0 auto;
     z-index: 2;
     animation: modalSlideIn 0.3s ease;
-    min-height: min-content; /* Ensure proper height */
 }
 
 @keyframes modalSlideIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9) translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
+    from { opacity: 0; transform: scale(0.9) translateY(-50px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .custom-modal-content {
@@ -407,10 +324,9 @@
     border-radius: 20px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     overflow: hidden;
-    max-height: none; /* Remove max-height restriction */
     display: flex;
     flex-direction: column;
-    margin-bottom: 2rem; /* Space at bottom for scroll */
+    margin-bottom: 2rem;
 }
 
 .modal-header {
@@ -420,7 +336,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-shrink: 0;
     position: sticky;
     top: 0;
     z-index: 10;
@@ -447,18 +362,15 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    padding: 0;
 }
 
 .btn-close-custom:hover {
     background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
     transform: rotate(90deg);
 }
 
 .modal-body {
     padding: 2rem;
-    overflow-y: visible; /* Allow natural scroll */
     flex: 1;
 }
 
@@ -468,43 +380,204 @@
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
-    flex-shrink: 0;
     position: sticky;
     bottom: 0;
     background: white;
-    z-index: 10;
 }
 
-/* Prevent body scroll when modal is open */
 body.modal-open {
     overflow: hidden;
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .custom-edit-modal {
-        padding: 1rem 0.5rem;
+    .dashboard-header { 
+        margin-bottom: 1.5rem; 
     }
     
-    .custom-modal-dialog {
+    .page-title { 
+        font-size: 1.35rem; 
+    }
+    
+    .page-subtitle { 
+        font-size: 0.85rem;
+    }
+    
+    .stats-grid { 
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+        padding: 1.25rem;
+    }
+
+    .stat-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.35rem;
+        margin-bottom: 0.85rem;
+    }
+
+    .stat-number {
+        font-size: 1.75rem;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+    }
+
+    .card-header {
+        padding: 1rem;
+    }
+
+    .card-header h5 {
+        font-size: 1rem;
+    }
+
+    .card-actions input {
+        width: 100%;
         max-width: 100%;
-        margin: 0;
+        margin-top: 0.75rem;
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
     }
-    
+
+    .table-modern { 
+        font-size: 0.85rem; 
+    }
+
+    .table-modern thead th {
+        padding: 0.85rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .table-modern tbody td {
+        padding: 0.85rem 0.5rem;
+    }
+
+    .btn-group-sm .btn {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .custom-modal-dialog {
+        max-width: calc(100% - 1rem);
+        margin: 0.5rem;
+    }
+
     .modal-body {
-        padding: 1.5rem;
+        padding: 1.5rem 1rem;
     }
-    
+
     .modal-footer {
+        padding: 1rem;
         flex-direction: column;
     }
-    
+
     .modal-footer .btn {
         width: 100%;
     }
 }
-</style>
 
+@media (max-width: 576px) {
+    .page-title {
+        font-size: 1.2rem;
+    }
+
+    .page-subtitle {
+        font-size: 0.8rem;
+    }
+
+    .stats-grid {
+        gap: 0.85rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+        border-radius: 10px;
+    }
+
+    .stat-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 1.25rem;
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    .card-header h5 {
+        font-size: 0.9rem;
+    }
+
+    .table-modern {
+        font-size: 0.8rem;
+    }
+
+    .table-modern thead th {
+        padding: 0.75rem 0.4rem;
+        font-size: 0.7rem;
+    }
+
+    .table-modern tbody td {
+        padding: 0.75rem 0.4rem;
+    }
+
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.4rem;
+        font-size: 0.75rem;
+    }
+
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .modal-header {
+        padding: 1.25rem 1rem;
+    }
+
+    .modal-title {
+        font-size: 1.05rem;
+    }
+
+    .btn-close-custom {
+        width: 32px;
+        height: 32px;
+    }
+
+    .modal-body {
+        padding: 1.25rem 0.85rem;
+    }
+
+    .form-label {
+        font-size: 0.8rem;
+    }
+
+    .form-control, .form-select {
+        font-size: 0.85rem;
+        padding: 0.65rem 0.8rem;
+    }
+
+    .modal-footer {
+        padding: 0.85rem;
+    }
+
+    .modal-footer .btn {
+        font-size: 0.85rem;
+        padding: 0.65rem;
+    }
+}
+</style>
+@endsection
+
+@section('scripts')
 <script>
 // Search functionality
 document.getElementById('searchTable')?.addEventListener('keyup', function() {
@@ -515,50 +588,33 @@ document.getElementById('searchTable')?.addEventListener('keyup', function() {
     });
 });
 
-// Open Edit Modal - FIXED
+// Open Edit Modal
 function openEditModal(userId) {
-    // Remove any existing Bootstrap modal backdrops
-    const existingBackdrops = document.querySelectorAll('.modal-backdrop');
-    existingBackdrops.forEach(backdrop => backdrop.remove());
-    
-    // Close any other open modals
     const allModals = document.querySelectorAll('.custom-edit-modal');
     allModals.forEach(modal => {
         modal.classList.remove('show');
-        modal.style.display = 'none';
     });
     
-    // Open the selected modal
     const modal = document.getElementById('editModal' + userId);
     if (modal) {
         modal.classList.add('show');
-        modal.style.display = 'flex';
         document.body.classList.add('modal-open');
-        document.body.style.overflow = 'hidden';
     }
 }
 
-// Close Edit Modal - FIXED
+// Close Edit Modal
 function closeEditModal(userId) {
     const modal = document.getElementById('editModal' + userId);
     if (modal) {
         modal.classList.remove('show');
-        modal.style.display = 'none';
-        
-        // Check if there are other modals open
         const openModals = document.querySelectorAll('.custom-edit-modal.show');
         if (openModals.length === 0) {
             document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
         }
     }
-    
-    // Remove any lingering Bootstrap backdrops
-    const backdrops = document.querySelectorAll('.modal-backdrop');
-    backdrops.forEach(backdrop => backdrop.remove());
 }
 
-// Close modal on ESC key
+// Close on ESC key
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         const openModals = document.querySelectorAll('.custom-edit-modal.show');
@@ -567,14 +623,6 @@ document.addEventListener('keydown', function(e) {
             closeEditModal(modalId);
         });
     }
-});
-
-// Clean up on page load
-window.addEventListener('load', function() {
-    const backdrops = document.querySelectorAll('.modal-backdrop');
-    backdrops.forEach(backdrop => backdrop.remove());
-    document.body.classList.remove('modal-open');
-    document.body.style.overflow = '';
 });
 
 // Confirm Delete

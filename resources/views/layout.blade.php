@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Sistem Pelayanan Surat Desa')</title>
+    <title>@yield('title', 'Sistem Pelayanan Surat Desa Sayati')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -33,7 +33,9 @@
             position: relative;
         }
 
-        /* Decorative Background Pattern */
+        /* ==========================================
+           LAYER 0: BACKGROUND PATTERN (z-index: 0)
+           ========================================== */
         body::before {
             content: '';
             position: fixed;
@@ -47,7 +49,7 @@
             background-size: 100px 100px, 60px 60px;
             background-position: 0 0, 50px 50px;
             animation: drift 40s infinite linear;
-            z-index: 0; /* LAYER 0: Background pattern */
+            z-index: 0;
             pointer-events: none;
         }
 
@@ -56,22 +58,37 @@
             to { background-position: 100px 100px, 150px 150px; }
         }
 
-        /* 
-        ==========================================
-        Z-INDEX LAYERING SYSTEM (CORRECT):
-        ==========================================
-        Layer 0: Background pattern (z-index: 0)
-        Layer 1: Navbar & Footer (z-index: 1)
-        Layer 5: Content Container (z-index: 5)
-        Layer 1000: Dropdown menus (z-index: 1000)
-        Layer 999999: Modals (z-index: 999999)
-        
-        Urutan tampilan:
-        Background < Navbar/Footer < Container < Dropdown < Modals
-        ==========================================
-        */
+        /* ==========================================
+           LAYER 1: CONTENT CONTAINER (z-index: 1)
+           ========================================== */
+        .content-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(45, 106, 79, 0.15);
+            padding: 2.5rem;
+            margin: 2rem auto;
+            max-width: 1400px;
+            position: relative;
+            z-index: 1;
+            border: 3px solid var(--gold);
+            isolation: isolate; /* PENTING: Buat stacking context baru */
+        }
 
-        /* Modern Navbar with Village Theme - LAYER 1 */
+        .content-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 8px;
+            background: linear-gradient(90deg, var(--gold), var(--primary-green), var(--gold));
+            border-radius: 4px;
+        }
+
+        /* ==========================================
+           LAYER 10: NAVBAR & FOOTER (z-index: 10)
+           ========================================== */
         .navbar-village {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(15px);
@@ -79,10 +96,46 @@
             padding: 1rem 0;
             position: sticky;
             top: 0;
-            z-index: 1 !important; /* LAYER 1: Di bawah container */
+            z-index: 10;
             border-bottom: 3px solid var(--gold);
         }
 
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 2.5rem 0;
+            margin-top: 3rem;
+            border-top: 3px solid var(--gold);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ==========================================
+           LAYER 1000: DROPDOWN MENUS (z-index: 1000)
+           ========================================== */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            border-radius: 16px;
+            border: 2px solid var(--light-green);
+            box-shadow: 0 10px 40px rgba(45, 106, 79, 0.2);
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            z-index: 1000 !important;
+        }
+
+        /* ==========================================
+           LAYER 999999: MODALS (z-index: 999999)
+           ========================================== */
+        /* Modal styles will be defined in individual pages */
+        /* Dashboard.blade.php has custom-modal with z-index: 100000 (needs to be 999999) */
+        /* Users/index.blade.php has custom-edit-modal with z-index: 999999 (correct) */
+
+        /* Common navbar styles */
         .navbar-brand {
             font-weight: 700;
             font-size: 1.4rem;
@@ -197,7 +250,6 @@
             display: none;
         }
 
-        /* User Dropdown */
         .dropdown-toggle {
             display: flex;
             align-items: center;
@@ -206,11 +258,6 @@
             padding: 0.5rem 1rem !important;
             border-radius: 50px !important;
             border: 2px solid var(--light-green);
-        }
-
-        .dropdown {
-            position: relative;
-            z-index: 1000; /* Pastikan parent juga punya z-index tinggi */
         }
 
         .user-avatar-nav {
@@ -225,17 +272,6 @@
             font-weight: 700;
             font-size: 0.95rem;
             border: 2px solid var(--gold);
-        }
-
-        .dropdown-menu {
-            border-radius: 16px;
-            border: 2px solid var(--light-green);
-            box-shadow: 0 10px 40px rgba(45, 106, 79, 0.2);
-            padding: 0.75rem;
-            margin-top: 0.5rem;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            z-index: 1000 !important; /* LAYER 1000: Di atas content (5) tapi di bawah modal (999999) */
         }
 
         .dropdown-header {
@@ -268,31 +304,6 @@
             margin: 0.5rem 0;
         }
 
-        /* Content Area - LAYER 1 (DI BAWAH NAVBAR & FOOTER) */
-        .content-wrapper {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(45, 106, 79, 0.15);
-            padding: 2.5rem;
-            margin: 2rem auto;
-            max-width: 1400px;
-            position: relative;
-            z-index: 1 !important; /* LAYER 1: Di bawah navbar dan footer */
-            border: 3px solid var(--gold);
-        }
-
-        .content-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 8px;
-            background: linear-gradient(90deg, var(--gold), var(--primary-green), var(--gold));
-            border-radius: 4px;
-        }
-
         .page-title {
             font-size: 2rem;
             font-weight: 800;
@@ -310,7 +321,6 @@
             filter: drop-shadow(2px 2px 4px rgba(212, 165, 116, 0.3));
         }
 
-        /* Buttons */
         .btn {
             border-radius: 12px;
             padding: 0.75rem 1.5rem;
@@ -378,7 +388,6 @@
             border-color: var(--primary-green);
         }
 
-        /* Alerts */
         .alert {
             border: none;
             border-radius: 16px;
@@ -404,17 +413,6 @@
             background: linear-gradient(135deg, rgba(220, 53, 69, 0.15), rgba(239, 68, 68, 0.1));
             color: #991b1b;
             border-left-color: #dc3545;
-        }
-
-        /* Footer - LAYER 10 (DI ATAS CONTAINER) */
-        .footer {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            padding: 2.5rem 0;
-            margin-top: 3rem;
-            border-top: 3px solid var(--gold);
-            position: relative;
-            z-index: 10 !important; /* LAYER 10: Di atas container, sejajar dengan navbar */
         }
 
         .footer-content {
@@ -497,15 +495,12 @@
             border-top: 2px solid rgba(82, 183, 136, 0.2);
         }
 
-        /* Cards */
         .card {
             border: none;
             border-radius: 20px;
             box-shadow: 0 8px 30px rgba(45, 106, 79, 0.1);
             overflow: hidden;
             background: white;
-            position: relative;
-            z-index: auto; /* Inherit from parent */
         }
 
         .card-header {
@@ -513,8 +508,6 @@
             border: none;
             padding: 1.5rem;
             color: white;
-            position: relative;
-            z-index: auto; /* Inherit from parent */
         }
 
         .card-header h5 {
@@ -526,49 +519,324 @@
             gap: 0.6rem;
         }
 
-        /* Responsive */
         @media (max-width: 992px) {
+            body {
+                font-size: 0.95rem;
+            }
+
+            .navbar-village {
+                padding: 0.75rem 0;
+            }
+
+            .container {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+
             .content-wrapper {
-                padding: 2rem;
-                margin: 1.5rem;
+                padding: 1.5rem;
+                margin: 1rem auto;
                 border-radius: 20px;
+                border-width: 2px;
+            }
+
+            .content-wrapper::before {
+                width: 80px;
+                height: 6px;
+                top: -12px;
             }
 
             .page-title {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
+            }
+
+            .page-title i {
+                font-size: 1.75rem;
             }
 
             .brand-name {
                 font-size: 1rem;
             }
-        }
 
-        @media (max-width: 768px) {
-            .navbar-brand {
+            .brand-tagline {
+                font-size: 0.65rem;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 0.5rem 1rem !important;
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                padding: 0.65rem 1.25rem;
+                font-size: 0.9rem;
+            }
+
+            .card-header {
+                padding: 1.25rem;
+            }
+
+            .card-header h5 {
                 font-size: 1.1rem;
             }
 
+            .alert {
+                padding: 1rem 1.25rem;
+                font-size: 0.9rem;
+            }
+
+            .footer {
+                padding: 2rem 0;
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 0.9rem;
+            }
+
+            .navbar-village {
+                padding: 0.5rem 0;
+            }
+
+            .navbar-brand {
+                font-size: 1rem;
+                gap: 0.75rem;
+            }
+
             .brand-logo {
-                width: 42px;
-                height: 42px;
+                width: 38px;
+                height: 38px;
+                border-radius: 12px;
+                border-width: 2px;
+            }
+
+            .brand-name {
+                font-size: 0.95rem;
+            }
+
+            .brand-tagline {
+                font-size: 0.6rem;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 0.45rem 0.85rem !important;
+                font-size: 0.85rem;
+                gap: 0.5rem;
+            }
+
+            .user-avatar-nav {
+                width: 32px;
+                height: 32px;
+                font-size: 0.85rem;
+            }
+
+            .dropdown-toggle {
+                padding: 0.4rem 0.85rem !important;
+                font-size: 0.85rem;
+            }
+
+            .dropdown-menu {
+                font-size: 0.85rem;
+            }
+
+            .dropdown-item {
+                padding: 0.65rem 0.85rem;
+                font-size: 0.85rem;
+            }
+
+            .container {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
             }
 
             .content-wrapper {
-                padding: 1.5rem;
-                margin: 1rem;
+                padding: 1.25rem;
+                margin: 0.75rem auto;
+                border-radius: 16px;
+                box-shadow: 0 10px 30px rgba(45, 106, 79, 0.1);
+            }
+
+            .content-wrapper::before {
+                width: 60px;
+                height: 5px;
+                top: -10px;
             }
 
             .page-title {
-                font-size: 1.4rem;
+                font-size: 1.35rem;
+                gap: 0.5rem;
+            }
+
+            .page-title i {
+                font-size: 1.5rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+                border-radius: 10px;
+            }
+
+            .btn-lg {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.95rem;
+            }
+
+            .card {
+                border-radius: 16px;
+            }
+
+            .card-header {
+                padding: 1rem;
+            }
+
+            .card-header h5 {
+                font-size: 1rem;
+            }
+
+            .alert {
+                padding: 0.9rem 1rem;
+                font-size: 0.85rem;
+                border-radius: 12px;
+            }
+
+            .footer {
+                padding: 1.75rem 0;
+                margin-top: 1.5rem;
+            }
+
+            .footer-brand {
+                margin-bottom: 1.25rem;
+            }
+
+            .footer-logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .footer-text h4 {
+                font-size: 1.15rem;
+            }
+
+            .footer-text p {
+                font-size: 0.8rem;
             }
 
             .footer-links {
                 flex-direction: column;
-                gap: 0.75rem;
+                gap: 0.65rem;
+            }
+
+            .footer-link {
+                font-size: 0.85rem;
+            }
+
+            .footer-copyright {
+                font-size: 0.8rem;
             }
         }
 
-        /* Scrollbar */
+        @media (max-width: 576px) {
+            body {
+                font-size: 0.875rem;
+            }
+
+            .navbar-brand {
+                font-size: 0.9rem;
+                gap: 0.6rem;
+            }
+
+            .brand-logo {
+                width: 35px;
+                height: 35px;
+                border-radius: 10px;
+            }
+
+            .brand-name {
+                font-size: 0.85rem;
+            }
+
+            .brand-tagline {
+                font-size: 0.55rem;
+            }
+
+            .navbar-toggler {
+                padding: 0.4rem 0.6rem;
+                font-size: 1rem;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 0.4rem 0.75rem !important;
+                font-size: 0.8rem;
+            }
+
+            .content-wrapper {
+                padding: 1rem;
+                margin: 0.5rem auto;
+                border-radius: 14px;
+            }
+
+            .page-title {
+                font-size: 1.2rem;
+                gap: 0.4rem;
+            }
+
+            .page-title i {
+                font-size: 1.35rem;
+            }
+
+            .btn {
+                padding: 0.55rem 0.9rem;
+                font-size: 0.8rem;
+                border-radius: 8px;
+            }
+
+            .btn-lg {
+                padding: 0.7rem 1.1rem;
+                font-size: 0.9rem;
+            }
+
+            .card-header {
+                padding: 0.9rem;
+            }
+
+            .card-header h5 {
+                font-size: 0.95rem;
+            }
+
+            .alert {
+                padding: 0.8rem 0.9rem;
+                font-size: 0.8rem;
+            }
+
+            .footer {
+                padding: 1.5rem 0;
+            }
+
+            .footer-logo {
+                width: 45px;
+                height: 45px;
+            }
+
+            .footer-text h4 {
+                font-size: 1rem;
+            }
+
+            .footer-text p {
+                font-size: 0.75rem;
+            }
+
+            .footer-link {
+                font-size: 0.8rem;
+            }
+
+            .footer-copyright {
+                font-size: 0.75rem;
+            }
+        }
+
         ::-webkit-scrollbar {
             width: 12px;
         }
@@ -597,7 +865,7 @@
                     <i class="bi bi-houses-fill" style="display: none;"></i>
                 </div>
                 <div class="brand-text">
-                    <span class="brand-name">Sistem Surat Desa</span>
+                    <span class="brand-name">Sistem Surat Desa Sayati</span>
                     <span class="brand-tagline">Pelayanan Digital</span>
                 </div>
             </a>
@@ -685,34 +953,38 @@
                         <img src="{{ asset('images/logokap.png') }}" alt="Logo Desa" onerror="this.style.display='none';">
                     </div>
                     <div class="footer-text">
-                        <h4>Sistem Surat Desa</h4>
+                        <h4>Sistem Surat Desa Sayati</h4>
                         <p>Melayani Dengan Hati untuk Desa yang Maju</p>
                     </div>
                 </div>
                 
                 <div class="footer-links">
-                    <a href="#" class="footer-link">
+                    <a href="https://sayati.desa.id/index.php/artikel/2018/1/9/profil-desa-sayati" class="footer-link">
                         <i class="bi bi-info-circle"></i> Tentang Kami
                     </a>
-                    <a href="#" class="footer-link">
+                    <a href="https://sayati.desa.id/" class="footer-link">
                         <i class="bi bi-question-circle"></i> Bantuan
                     </a>
-                    <a href="#" class="footer-link">
+                    <a href="https://sayati.desa.id/index.php/artikel/2018/1/9/profil-desa-sayati" class="footer-link">
                         <i class="bi bi-shield-check"></i> Kebijakan Privasi
                     </a>
-                    <a href="#" class="footer-link">
+                    <a href="wa.me/6283836888962" class="footer-link">
                         <i class="bi bi-envelope"></i> Kontak
                     </a>
                 </div>
                 
                 <div class="footer-copyright">
-                    <p>&copy; 2026 Sistem Surat Desa. Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> untuk kemajuan desa</p>
+                    <p>&copy; 2026 Sistem Surat Desa Sayati. Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> untuk kemajuan desa</p>
                 </div>
             </div>
         </div>
     </footer>
 
+    {{-- MODAL CONTAINER - DI LUAR CONTENT WRAPPER (z-index: 999999) --}}
+    @yield('modals')
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @yield('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Auto-hide alerts after 5 seconds

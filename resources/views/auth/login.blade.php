@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistem Surat Desa</title>
+    <title>Login - Sistem Surat Desa Sayati</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -33,9 +33,9 @@
             justify-content: center;
             position: relative;
             overflow-x: hidden;
+            padding: 1rem;
         }
 
-        /* Decorative Background */
         body::before {
             content: '';
             position: absolute;
@@ -59,7 +59,6 @@
         .login-container {
             width: 100%;
             max-width: 1100px;
-            padding: 20px;
             position: relative;
             z-index: 1;
         }
@@ -87,7 +86,6 @@
             }
         }
 
-        /* Left Side - Welcome Section */
         .login-left {
             background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
             padding: 3.5rem;
@@ -115,7 +113,6 @@
             50% { transform: scale(1.2); opacity: 0.8; }
         }
 
-        /* Village Icon Pattern */
         .login-left::after {
             content: '🏘️';
             position: absolute;
@@ -148,11 +145,20 @@
             margin-bottom: 1.5rem;
             border: 3px solid var(--gold);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            padding: 0.5rem;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .logo-icon i {
             font-size: 3.5rem;
             color: white;
+            display: none;
         }
 
         .welcome-section h1 {
@@ -222,7 +228,6 @@
             opacity: 0.9;
         }
 
-        /* Right Side - Login Form */
         .login-right {
             padding: 3.5rem 3rem;
             display: flex;
@@ -371,14 +376,21 @@
             text-decoration: underline;
         }
 
+        /* MOBILE RESPONSIVE - COMPACT & FIT */
         @media (max-width: 992px) {
+            body {
+                padding: 0.5rem;
+            }
+
             .login-wrapper {
                 grid-template-columns: 1fr;
-                border-radius: 25px;
+                border-radius: 20px;
+                max-width: 500px;
+                margin: 0 auto;
             }
 
             .login-left {
-                padding: 2.5rem;
+                padding: 2rem 1.5rem;
                 text-align: center;
             }
 
@@ -386,39 +398,121 @@
                 display: none;
             }
 
-            .features {
-                display: none;
+            .logo-icon {
+                width: 70px;
+                height: 70px;
+                margin-bottom: 1rem;
+            }
+
+            .logo-icon i {
+                font-size: 2.5rem;
             }
 
             .welcome-section h1 {
-                font-size: 2rem;
+                font-size: 1.75rem;
+                margin-bottom: 0.75rem;
             }
 
-            .login-right {
-                padding: 2.5rem 2rem;
+            .welcome-section p {
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
             }
-        }
 
-        @media (max-width: 576px) {
+            .features {
+                display: none; /* Hide features on mobile */
+            }
+
             .login-right {
                 padding: 2rem 1.5rem;
             }
 
             .login-header h2 {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
             }
 
-            .welcome-section h1 {
-                font-size: 1.75rem;
+            .login-header p {
+                font-size: 0.9rem;
+            }
+
+            .form-group {
+                margin-bottom: 1.25rem;
+            }
+
+            .form-control {
+                padding: 0.85rem 1rem 0.85rem 3.25rem;
+                font-size: 0.9rem;
+            }
+
+            .btn-login {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .register-link {
+                margin-top: 1.25rem;
+                padding-top: 1.25rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                align-items: flex-start;
+                padding: 0.5rem;
+            }
+
+            .login-wrapper {
+                border-radius: 16px;
+                border-width: 3px;
+            }
+
+            .login-left {
+                padding: 1.5rem 1rem;
             }
 
             .logo-icon {
-                width: 80px;
-                height: 80px;
+                width: 60px;
+                height: 60px;
             }
 
-            .logo-icon i {
-                font-size: 2.5rem;
+            .welcome-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .welcome-section p {
+                font-size: 0.85rem;
+            }
+
+            .login-right {
+                padding: 1.5rem 1rem;
+            }
+
+            .login-header h2 {
+                font-size: 1.35rem;
+            }
+
+            .form-label {
+                font-size: 0.85rem;
+            }
+
+            .form-control {
+                padding: 0.8rem 0.9rem 0.8rem 3rem;
+                font-size: 0.85rem;
+            }
+
+            .input-icon {
+                left: 1rem;
+                font-size: 1.1rem;
+            }
+
+            .btn-login {
+                padding: 0.9rem;
+                font-size: 0.95rem;
+            }
+
+            .alert {
+                padding: 0.9rem;
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -430,11 +524,12 @@
                 <div class="welcome-section">
                     <div class="logo-section">
                         <div class="logo-icon">
+                            <img src="{{ asset('images/logokap.png') }}" alt="Logo Desa" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                             <i class="bi bi-houses-fill"></i>
                         </div>
                     </div>
                     
-                    <h1>Sistem Surat Desa</h1>
+                    <h1>Sistem Surat Desa Sayati</h1>
                     <p>Solusi Digital Modern untuk Pelayanan Administrasi Desa yang Cepat, Mudah, dan Terpercaya</p>
 
                     <div class="features">

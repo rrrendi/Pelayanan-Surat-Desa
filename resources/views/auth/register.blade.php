@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Daftar - Sistem Surat Desa</title>
+    <title>Daftar - Sistem Surat Desa Sayati</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -29,7 +29,7 @@
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #d4f1f4 0%, #b5e7a0 50%, #95d5b2 100%);
             min-height: 100vh;
-            padding: 2rem 0;
+            padding: 1.5rem 0;
             position: relative;
             overflow-x: hidden;
         }
@@ -57,6 +57,7 @@
             margin: 0 auto;
             position: relative;
             z-index: 1;
+            padding: 0 1rem;
         }
 
         .register-card {
@@ -220,13 +221,127 @@
             text-decoration: underline;
         }
 
+        /* MOBILE RESPONSIVE - COMPACT */
         @media (max-width: 768px) {
-            .register-header h1 {
-                font-size: 1.75rem;
+            body {
+                padding: 0.75rem 0;
             }
-            
+
+            .register-container {
+                padding: 0 0.5rem;
+            }
+
+            .register-card {
+                border-radius: 20px;
+                border-width: 3px;
+            }
+
+            .register-header {
+                padding: 1.75rem 1.25rem;
+            }
+
+            .register-header h1 {
+                font-size: 1.6rem;
+            }
+
+            .register-header p {
+                font-size: 0.9rem;
+            }
+
             .register-body {
-                padding: 1.5rem;
+                padding: 1.5rem 1rem;
+            }
+
+            .form-section {
+                margin-bottom: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+                padding-bottom: 0.5rem;
+            }
+
+            .section-title i {
+                font-size: 1.25rem;
+            }
+
+            .form-label {
+                font-size: 0.85rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .form-control, .form-select {
+                padding: 0.75rem 0.85rem;
+                font-size: 0.9rem;
+            }
+
+            .row > div {
+                margin-bottom: 1rem;
+            }
+
+            .btn-register {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .login-link {
+                margin-top: 1.25rem;
+                padding-top: 1.25rem;
+                font-size: 0.9rem;
+            }
+
+            .alert {
+                padding: 0.9rem;
+                font-size: 0.85rem;
+            }
+
+            .alert ul {
+                margin-bottom: 0;
+                padding-left: 1.25rem;
+            }
+
+            .alert li {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .register-header {
+                padding: 1.5rem 1rem;
+            }
+
+            .register-header h1 {
+                font-size: 1.4rem;
+            }
+
+            .register-header::before {
+                font-size: 7rem;
+                right: -20px;
+                top: -15px;
+            }
+
+            .register-body {
+                padding: 1.25rem 0.85rem;
+            }
+
+            .section-title {
+                font-size: 1rem;
+                gap: 0.5rem;
+            }
+
+            .form-label {
+                font-size: 0.8rem;
+            }
+
+            .form-control, .form-select {
+                padding: 0.7rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .btn-register {
+                padding: 0.95rem;
+                font-size: 0.95rem;
             }
         }
     </style>
