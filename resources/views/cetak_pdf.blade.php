@@ -23,20 +23,6 @@
 
         .kop-surat {
             text-align: center;
-            position: relative;
-        }
-
-        .logo {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 80px;
-            height: 80px;
-        }
-
-        .kop-content {
-            padding-left: 100px;
-            padding-right: 100px;
         }
 
         .kop-surat h2 {
@@ -151,10 +137,6 @@
             text-decoration: underline;
         }
 
-        .ttd-position {
-            font-size: 10pt;
-        }
-
         .footer {
             clear: both;
             margin-top: 80px;
@@ -186,26 +168,6 @@
             z-index: -1;
             font-weight: bold;
         }
-
-        .stamp {
-            position: relative;
-            margin-top: -40px;
-            margin-left: 120px;
-        }
-
-        .stamp-circle {
-            width: 80px;
-            height: 80px;
-            border: 3px solid #cc0000;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 8pt;
-            font-weight: bold;
-            color: #cc0000;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
@@ -213,19 +175,11 @@
 
     <div class="header-wrapper">
         <div class="kop-surat">
-            <div class="logo">
-                <svg width="80" height="80" viewBox="0 0 80 80">
-                    <circle cx="40" cy="40" r="38" fill="none" stroke="#000" stroke-width="2"/>
-                    <text x="40" y="50" font-size="40" text-anchor="middle" font-weight="bold">🏘️</text>
-                </svg>
-            </div>
-            <div class="kop-content">
-                <h2>Pemerintah Desa Sayati</h2>
-                <h3>Kecamatan Margahayu</h3>
-                <p><strong>Kabupaten Bandung - Provinsi Jawa Barat</strong></p>
-                <p>Alamat: Jl. Kantor Desa No. 1, Sayati, Margahayu, Bandung 40287</p>
-                <p>Telp: (022) 12345678 | Email: info@desasayati.go.id</p>
-            </div>
+            <h2>Pemerintah Desa Sayati</h2>
+            <h3>Kecamatan Margahayu</h3>
+            <p><strong>Kabupaten Bandung - Provinsi Jawa Barat</strong></p>
+            <p>Alamat: Jl. Kantor Desa No. 1, Sayati, Margahayu, Bandung 40287</p>
+            <p>Telp: (022) 12345678 | Email: info@desasayati.go.id</p>
         </div>
     </div>
 
@@ -254,27 +208,27 @@
             <tr>
                 <td>Tempat/Tanggal Lahir</td>
                 <td>:</td>
-                <td>{{ $surat->user->tempat_lahir ?? '-' }} / {{ $surat->user->tanggal_lahir ? $surat->user->tanggal_lahir->format('d F Y') : '-' }}</td>
+                <td>{{ $surat->user->tempat_lahir }}, {{ $surat->user->tanggal_lahir->isoFormat('D MMMM Y') }}</td>
             </tr>
             <tr>
                 <td>Jenis Kelamin</td>
                 <td>:</td>
-                <td>{{ $surat->user->jenis_kelamin ?? '-' }}</td>
+                <td>{{ $surat->user->jenis_kelamin }}</td>
             </tr>
             <tr>
                 <td>Pekerjaan</td>
                 <td>:</td>
-                <td>{{ $surat->user->pekerjaan ?? '-' }}</td>
+                <td>{{ $surat->user->pekerjaan }}</td>
             </tr>
             <tr>
                 <td>Agama</td>
                 <td>:</td>
-                <td>{{ $surat->user->agama ?? '-' }}</td>
+                <td>{{ $surat->user->agama }}</td>
             </tr>
             <tr>
                 <td>Status Perkawinan</td>
                 <td>:</td>
-                <td>{{ $surat->user->status_perkawinan ?? '-' }}</td>
+                <td>{{ $surat->user->status_perkawinan }}</td>
             </tr>
             <tr>
                 <td>Alamat</td>
@@ -303,14 +257,8 @@
     <div class="ttd-section">
         <div class="ttd">
             <p>Sayati, {{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y') }}</p>
-            <p class="ttd-position"><strong>Kepala Desa Sayati</strong></p>
+            <p><strong>Kepala Desa Sayati</strong></p>
             <div class="ttd-space"></div>
-            
-            <div class="stamp">
-                <div class="stamp-circle">
-                    STEMPEL<br>DESA<br>SAYATI
-                </div>
-            </div>
             
             <p class="ttd-name">Fijia Al Hadiansyah</p>
             <p style="font-size: 10pt;">NIP. 19800101 200501 1 001</p>
@@ -323,7 +271,7 @@
         </div>
         <div class="footer-info">
             <div>Dicetak pada: {{ \Carbon\Carbon::now()->format('d/m/Y H:i:s') }} WIB</div>
-            <div>Kode Verifikasi: {{ strtoupper(md5($surat->id . $surat->created_at)) }}</div>
+            <div>Kode Verifikasi: {{ strtoupper(substr(md5($surat->id . $surat->created_at), 0, 12)) }}</div>
         </div>
     </div>
 </body>

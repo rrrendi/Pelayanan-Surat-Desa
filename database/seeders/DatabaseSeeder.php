@@ -1,12 +1,11 @@
 <?php
-// database/seeders/DatabaseSeeder.php
 
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\SuratJenis;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
-use App\Models\SuratJenis;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         // Buat Admin
         User::create([
-            'name' => 'Admin Desa',
+            'name' => 'Admin Desa Sayati',
             'email' => 'admin@desa.com',
             'password' => Hash::make('admin123'),
             'role' => 'admin',
@@ -25,65 +24,22 @@ class DatabaseSeeder extends Seeder
             'agama' => 'Islam',
             'pekerjaan' => 'Pegawai Negeri Sipil',
             'status_perkawinan' => 'Kawin',
-            'alamat' => 'Kantor Desa Sayati, Jl. Raya Desa No. 1'
-        ]);
-
-        // Buat Warga 1
-        User::create([
-            'name' => 'Budi Santoso',
-            'email' => 'budi@gmail.com',
-            'password' => Hash::make('budi123'),
-            'role' => 'warga',
-            'nik' => '3201010101010002',
-            'tempat_lahir' => 'Bandung',
-            'tanggal_lahir' => '1990-05-15',
-            'jenis_kelamin' => 'Laki-laki',
-            'agama' => 'Islam',
-            'pekerjaan' => 'Wiraswasta',
-            'status_perkawinan' => 'Kawin',
-            'alamat' => 'Jl. Merdeka No. 123, RT 001/RW 002'
-        ]);
-
-        // Buat Warga 2
-        User::create([
-            'name' => 'Siti Nurhaliza',
-            'email' => 'siti@gmail.com',
-            'password' => Hash::make('siti123'),
-            'role' => 'warga',
-            'nik' => '3201010101010003',
-            'tempat_lahir' => 'Bandung',
-            'tanggal_lahir' => '1992-08-20',
-            'jenis_kelamin' => 'Perempuan',
-            'agama' => 'Islam',
-            'pekerjaan' => 'Ibu Rumah Tangga',
-            'status_perkawinan' => 'Kawin',
-            'alamat' => 'Jl. Sudirman No. 45, RT 003/RW 001'
+            'alamat' => 'Kantor Desa Sayati, Jl. Raya Desa No. 1, Margahayu, Bandung'
         ]);
 
         // Buat Jenis Surat
-        SuratJenis::create([
-            'nama_surat' => 'Surat Keterangan Domisili',
-            'keterangan' => 'Surat keterangan tempat tinggal yang sah'
-        ]);
+        $jenisSurat = [
+            ['nama_surat' => 'Surat Keterangan Domisili', 'keterangan' => 'Surat keterangan tempat tinggal yang sah'],
+            ['nama_surat' => 'Surat Keterangan Usaha', 'keterangan' => 'Surat keterangan memiliki usaha/kegiatan ekonomi'],
+            ['nama_surat' => 'Surat Keterangan Tidak Mampu', 'keterangan' => 'Surat keterangan kondisi ekonomi kurang mampu'],
+            ['nama_surat' => 'Surat Keterangan Kelahiran', 'keterangan' => 'Surat keterangan kelahiran bayi'],
+            ['nama_surat' => 'Surat Pengantar KTP', 'keterangan' => 'Surat pengantar pembuatan KTP baru'],
+            ['nama_surat' => 'Surat Keterangan Penghasilan', 'keterangan' => 'Surat keterangan penghasilan per bulan'],
+            ['nama_surat' => 'Surat Keterangan Belum Menikah', 'keterangan' => 'Surat keterangan status belum menikah'],
+        ];
 
-        SuratJenis::create([
-            'nama_surat' => 'Surat Keterangan Usaha',
-            'keterangan' => 'Surat keterangan memiliki usaha/kegiatan ekonomi'
-        ]);
-
-        SuratJenis::create([
-            'nama_surat' => 'Surat Keterangan Tidak Mampu',
-            'keterangan' => 'Surat keterangan kondisi ekonomi kurang mampu'
-        ]);
-
-        SuratJenis::create([
-            'nama_surat' => 'Surat Keterangan Kelahiran',
-            'keterangan' => 'Surat keterangan kelahiran bayi'
-        ]);
-
-        SuratJenis::create([
-            'nama_surat' => 'Surat Pengantar KTP',
-            'keterangan' => 'Surat pengantar pembuatan KTP baru'
-        ]);
+        foreach ($jenisSurat as $jenis) {
+            SuratJenis::create($jenis);
+        }
     }
 }

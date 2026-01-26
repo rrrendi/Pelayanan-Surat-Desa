@@ -6,9 +6,8 @@
     <title>Login - Sistem Surat Desa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
         :root {
             --primary-green: #2d6a4f;
             --secondary-green: #40916c;
@@ -55,11 +54,6 @@
         @keyframes drift {
             from { background-position: 0 0, 50px 50px; }
             to { background-position: 100px 100px, 150px 150px; }
-        }
-
-        /* Simplified decoration - no animation to prevent lag */
-        .leaf {
-            display: none;
         }
 
         .login-container {
@@ -331,140 +325,10 @@
             transform: translateY(-1px);
         }
 
-        /* Demo Section */
-        .demo-section {
-            margin-top: 2rem;
-            background: linear-gradient(135deg, rgba(82, 183, 136, 0.1), rgba(45, 106, 79, 0.05));
-            border-radius: 18px;
-            padding: 1.75rem;
-            border: 2px solid var(--light-green);
-        }
-
-        .demo-header {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            color: var(--primary-green);
-            font-weight: 700;
-            margin-bottom: 1.25rem;
-            font-size: 1rem;
-        }
-
-        .demo-header i {
-            font-size: 1.3rem;
-        }
-
-        .demo-tabs {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.6rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .demo-tab {
-            padding: 0.8rem 0.5rem;
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.85rem;
-            font-weight: 700;
-        }
-
-        .demo-tab:hover {
-            border-color: var(--light-green);
-            background: rgba(82, 183, 136, 0.05);
-            transform: translateY(-2px);
-        }
-
-        .demo-tab.active {
-            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
-            color: white;
-            border-color: var(--primary-green);
-            box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
-        }
-
-        .demo-content {
-            display: none;
-        }
-
-        .demo-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .credential-item {
-            margin-bottom: 1rem;
-        }
-
-        .credential-label {
-            font-size: 0.75rem;
-            color: var(--brown);
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .credential-field {
-            display: flex;
-            gap: 0.6rem;
-        }
-
-        .credential-text {
-            flex: 1;
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 0.7rem 1rem;
-            font-size: 0.95rem;
-            font-family: 'Courier New', monospace;
-            color: var(--dark);
-            font-weight: 600;
-            user-select: all;
-            transition: all 0.2s ease;
-        }
-
-        .credential-text:hover {
-            border-color: var(--light-green);
-            background: rgba(82, 183, 136, 0.05);
-        }
-
-        .btn-copy {
-            background: var(--gold);
-            color: var(--dark);
-            border: none;
-            border-radius: 10px;
-            padding: 0.7rem 1rem;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            font-weight: 700;
-        }
-
-        .btn-copy:hover {
-            background: var(--primary-green);
-            color: white;
-            transform: scale(1.05);
-        }
-
-        .btn-copy.copied {
-            background: var(--secondary-green);
-            color: white;
-        }
-
         .alert {
             border: none;
             border-radius: 14px;
-            padding: 1.1rem 1.3rem;
+            padding: 1.1rem;
             margin-bottom: 1.5rem;
             border-left: 5px solid;
             animation: slideDown 0.3s ease;
@@ -486,6 +350,25 @@
 
         .alert i {
             font-size: 1.3rem;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #f1f5f9;
+        }
+
+        .register-link a {
+            color: var(--primary-green);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .register-link a:hover {
+            color: var(--secondary-green);
+            text-decoration: underline;
         }
 
         @media (max-width: 992px) {
@@ -525,10 +408,6 @@
                 font-size: 1.6rem;
             }
 
-            .demo-tabs {
-                grid-template-columns: 1fr;
-            }
-
             .welcome-section h1 {
                 font-size: 1.75rem;
             }
@@ -545,14 +424,7 @@
     </style>
 </head>
 <body>
-    <!-- Floating Leaves -->
-    <div class="leaf">🍃</div>
-    <div class="leaf">🌿</div>
-    <div class="leaf">🍃</div>
-    <div class="leaf">🌿</div>
-    <div class="leaf">🍃</div>
-
-    <div class="login-container">
+    <div class="container login-container">
         <div class="login-wrapper">
             <div class="login-left">
                 <div class="welcome-section">
@@ -640,154 +512,19 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-login">
+                    <button type="submit" class="btn btn-login">
                         <i class="bi bi-box-arrow-in-right"></i>
                         Masuk ke Dashboard
                     </button>
+
+                    <div class="register-link">
+                        Belum punya akun? <a href="{{ route('register') }}">Daftar di sini</a>
+                    </div>
                 </form>
-
-                <div class="demo-section">
-                    <div class="demo-header">
-                        <i class="bi bi-key-fill"></i>
-                        Akun Demo
-                    </div>
-
-                    <div class="demo-tabs">
-                        <div class="demo-tab active" onclick="switchTab('admin')">
-                            <i class="bi bi-shield-check"></i><br>Admin
-                        </div>
-                        <div class="demo-tab" onclick="switchTab('warga1')">
-                            <i class="bi bi-person"></i><br>Warga 1
-                        </div>
-                        <div class="demo-tab" onclick="switchTab('warga2')">
-                            <i class="bi bi-person"></i><br>Warga 2
-                        </div>
-                    </div>
-
-                    <div id="admin-content" class="demo-content active">
-                        <div class="credential-item">
-                            <div class="credential-label">Email</div>
-                            <div class="credential-field">
-                                <span class="credential-text" id="adminEmail">admin@desa.com</span>
-                                <button class="btn-copy" onclick="copyText('adminEmail', this)">
-                                    <i class="bi bi-clipboard"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="credential-item">
-                            <div class="credential-label">Password</div>
-                            <div class="credential-field">
-                                <span class="credential-text" id="adminPass">admin123</span>
-                                <button class="btn-copy" onclick="copyText('adminPass', this)">
-                                    <i class="bi bi-clipboard"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="warga1-content" class="demo-content">
-                        <div class="credential-item">
-                            <div class="credential-label">Email</div>
-                            <div class="credential-field">
-                                <span class="credential-text" id="warga1Email">budi@gmail.com</span>
-                                <button class="btn-copy" onclick="copyText('warga1Email', this)">
-                                    <i class="bi bi-clipboard"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="credential-item">
-                            <div class="credential-label">Password</div>
-                            <div class="credential-field">
-                                <span class="credential-text" id="warga1Pass">budi123</span>
-                                <button class="btn-copy" onclick="copyText('warga1Pass', this)">
-                                    <i class="bi bi-clipboard"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="warga2-content" class="demo-content">
-                        <div class="credential-item">
-                            <div class="credential-label">Email</div>
-                            <div class="credential-field">
-                                <span class="credential-text" id="warga2Email">siti@gmail.com</span>
-                                <button class="btn-copy" onclick="copyText('warga2Email', this)">
-                                    <i class="bi bi-clipboard"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="credential-item">
-                            <div class="credential-label">Password</div>
-                            <div class="credential-field">
-                                <span class="credential-text" id="warga2Pass">siti123</span>
-                                <button class="btn-copy" onclick="copyText('warga2Pass', this)">
-                                    <i class="bi bi-clipboard"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        function switchTab(tab) {
-            document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.demo-content').forEach(c => c.classList.remove('active'));
-            
-            event.target.closest('.demo-tab').classList.add('active');
-            document.getElementById(tab + '-content').classList.add('active');
-        }
-
-        function copyText(elementId, button) {
-            const textElement = document.getElementById(elementId);
-            const text = textElement.textContent.trim();
-
-            // Fallback for older browsers
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => {
-                    const originalHTML = button.innerHTML;
-                    button.innerHTML = '<i class="bi bi-check2"></i>';
-                    button.classList.add('copied');
-
-                    setTimeout(() => {
-                        button.innerHTML = originalHTML;
-                        button.classList.remove('copied');
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Copy failed:', err);
-                    fallbackCopy(text, button);
-                });
-            } else {
-                fallbackCopy(text, button);
-            }
-        }
-
-        function fallbackCopy(text, button) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            
-            try {
-                document.execCommand('copy');
-                const originalHTML = button.innerHTML;
-                button.innerHTML = '<i class="bi bi-check2"></i>';
-                button.classList.add('copied');
-
-                setTimeout(() => {
-                    button.innerHTML = originalHTML;
-                    button.classList.remove('copied');
-                }, 2000);
-            } catch (err) {
-                alert('Gagal menyalin: ' + text);
-            }
-            
-            document.body.removeChild(textarea);
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,4 +1,3 @@
-// database/migrations/0001_01_01_000000_create_users_table.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -16,8 +15,17 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'warga'])->default('warga');
-            $table->string('nik', 16)->unique()->nullable(); // NIK harus unique dan 16 digit
-            $table->text('alamat')->nullable();
+            
+            // Data Pribadi Lengkap
+            $table->string('nik', 16)->unique();
+            $table->string('tempat_lahir', 100);
+            $table->date('tanggal_lahir');
+            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+            $table->string('agama', 50);
+            $table->string('pekerjaan', 100);
+            $table->enum('status_perkawinan', ['Belum Kawin', 'Kawin', 'Cerai Hidup', 'Cerai Mati']);
+            $table->text('alamat');
+            
             $table->rememberToken();
             $table->timestamps();
         });

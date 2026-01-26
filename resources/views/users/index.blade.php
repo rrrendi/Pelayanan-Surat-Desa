@@ -10,10 +10,10 @@
             Kelola Data Warga
         </h2>
         <p class="page-subtitle">Manajemen data warga yang terdaftar di sistem</p>
+        <small class="text-muted">
+            <i class="bi bi-info-circle"></i> Warga mendaftar sendiri melalui halaman registrasi
+        </small>
     </div>
-    <a href="{{ route('users.create') }}" class="btn btn-primary btn-lg">
-        <i class="bi bi-person-plus"></i> Tambah Warga Baru
-    </a>
 </div>
 
 <div class="stats-grid mb-4">
@@ -25,9 +25,6 @@
             <div class="stat-number">{{ $users->where('role', 'warga')->count() }}</div>
             <div class="stat-label">Total Warga</div>
         </div>
-        <div class="stat-badge badge-info">
-            <i class="bi bi-person-check"></i> Terdaftar
-        </div>
     </div>
 
     <div class="stat-card stat-success">
@@ -38,9 +35,6 @@
             <div class="stat-number">{{ $users->where('role', 'admin')->count() }}</div>
             <div class="stat-label">Administrator</div>
         </div>
-        <div class="stat-badge badge-success">
-            <i class="bi bi-shield"></i> Aktif
-        </div>
     </div>
 
     <div class="stat-card stat-warning">
@@ -50,9 +44,6 @@
         <div class="stat-content">
             <div class="stat-number">{{ $totalPengajuan ?? 0 }}</div>
             <div class="stat-label">Total Pengajuan</div>
-        </div>
-        <div class="stat-badge badge-warning">
-            <i class="bi bi-graph-up"></i> Bulan ini
         </div>
     </div>
 </div>
@@ -66,11 +57,6 @@
             <div class="d-flex gap-2">
                 <input type="text" class="form-control form-control-sm" id="searchTable" 
                        placeholder="🔍 Cari nama, NIK, email..." style="width: 250px;">
-                <select class="form-select form-select-sm" id="filterRole" style="width: 150px;">
-                    <option value="">Semua Role</option>
-                    <option value="admin">Admin</option>
-                    <option value="warga">Warga</option>
-                </select>
             </div>
         </div>
     </div>
@@ -81,65 +67,31 @@
                 <thead>
                     <tr>
                         <th width="5%">No</th>
-                        <th>Nama & Email</th>
+                        <th>Nama</th>
+                        <th>Email</th>
                         <th>NIK</th>
                         <th>Alamat</th>
                         <th width="10%">Role</th>
-                        <th width="12%">Terdaftar</th>
-                        <th width="15%">Aksi</th>
+                        <th width="12%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($users as $index => $user)
-                    <tr data-role="{{ $user->role }}">
+                    <tr>
                         <td><strong>{{ $index + 1 }}</strong></td>
-                        <td>
-                            <div class="user-info">
-                                <div class="user-avatar" style="background: linear-gradient(135deg, {{ $user->role === 'admin' ? '#ef4444, #dc2626' : '#3b82f6, #2563eb' }});">
-                                    {{ substr($user->name, 0, 1) }}
-                                </div>
-                                <div>
-                                    <div class="user-name">{{ $user->name }}</div>
-                                    <div class="user-email">{{ $user->email }}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="nik-badge">
-                                <i class="bi bi-credit-card"></i>
-                                {{ $user->nik ?? '-' }}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="alamat-text">
-                                {{ Str::limit($user->alamat ?? '-', 40) }}
-                            </div>
-                        </td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->nik }}</td>
+                        <td>{{ Str::limit($user->alamat, 40) }}</td>
                         <td>
                             @if($user->role === 'admin')
-                            <span class="badge-modern badge-modern-danger">
-                                <i class="bi bi-shield-fill"></i> Admin
-                            </span>
+                            <span class="badge bg-danger">Admin</span>
                             @else
-                            <span class="badge-modern badge-modern-primary">
-                                <i class="bi bi-person"></i> Warga
-                            </span>
+                            <span class="badge bg-primary">Warga</span>
                             @endif
                         </td>
                         <td>
-                            <div class="date-display">
-                                <i class="bi bi-calendar3"></i>
-                                {{ $user->created_at->format('d/m/Y') }}
-                            </div>
-                            <div class="time-display">
-                                {{ $user->created_at->diffForHumans() }}
-                            </div>
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm" role="group">
-                                <button class="btn btn-info" onclick="openViewModal({{ $user->id }})" title="Lihat Detail">
-                                    <i class="bi bi-eye"></i>
-                                </button>
+                            <div class="btn-group btn-group-sm">
                                 @if($user->id !== Auth::id())
                                 <button class="btn btn-warning" onclick="openEditModal({{ $user->id }})" title="Edit">
                                     <i class="bi bi-pencil"></i>
@@ -147,6 +99,8 @@
                                 <button class="btn btn-danger" onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}')" title="Hapus">
                                     <i class="bi bi-trash"></i>
                                 </button>
+                                @else
+                                <span class="badge bg-secondary">Anda</span>
                                 @endif
                             </div>
                         </td>
@@ -157,83 +111,25 @@
         </div>
         @else
         <div class="empty-state">
-            <div class="empty-icon">
-                <i class="bi bi-people"></i>
-            </div>
-            <h3>Belum Ada Warga Terdaftar</h3>
-            <p>Klik tombol "Tambah Warga Baru" untuk mendaftarkan warga pertama</p>
-            <a href="{{ route('users.create') }}" class="btn btn-primary mt-3">
-                <i class="bi bi-person-plus"></i> Tambah Warga Sekarang
-            </a>
+            <p>Belum ada warga terdaftar</p>
         </div>
         @endif
     </div>
 </div>
 
-<!-- View Modals - TANPA BOOTSTRAP MODAL, PAKAI DIV BIASA -->
+<!-- MODAL EDIT -->
 @foreach($users as $user)
-<div class="custom-modal" id="viewModal{{ $user->id }}" style="display: none;">
-    <div class="custom-modal-backdrop" onclick="closeModal('viewModal{{ $user->id }}')"></div>
-    <div class="custom-modal-dialog">
-        <div class="custom-modal-content modern-modal">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    <i class="bi bi-person-circle"></i>
-                    Detail Warga
-                </h5>
-                <button type="button" class="btn-close" onclick="closeModal('viewModal{{ $user->id }}')"></button>
-            </div>
-            <div class="modal-body">
-                <div class="user-detail-card">
-                    <div class="user-avatar-large" style="background: linear-gradient(135deg, {{ $user->role === 'admin' ? '#ef4444, #dc2626' : '#3b82f6, #2563eb' }});">
-                        {{ substr($user->name, 0, 1) }}
-                    </div>
-                    <h4 class="text-center mt-3">{{ $user->name }}</h4>
-                    <p class="text-center text-muted">{{ $user->email }}</p>
-                    
-                    <div class="info-grid mt-4">
-                        <div class="info-item">
-                            <span class="info-label">NIK</span>
-                            <span class="info-value">{{ $user->nik ?? '-' }}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Role</span>
-                            <span class="info-value">{{ ucfirst($user->role) }}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Alamat</span>
-                            <span class="info-value">{{ $user->alamat ?? '-' }}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Terdaftar Sejak</span>
-                            <span class="info-value">{{ $user->created_at->format('d M Y') }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeModal('viewModal{{ $user->id }}')">
-                    <i class="bi bi-x-circle"></i> Tutup
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Modal -->
-<div class="custom-modal" id="editModal{{ $user->id }}" style="display: none;">
-    <div class="custom-modal-backdrop" onclick="closeModal('editModal{{ $user->id }}')"></div>
-    <div class="custom-modal-dialog custom-modal-lg">
-        <div class="custom-modal-content modern-modal">
+<div class="modal fade" id="editModal{{ $user->id }}" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
             <form method="POST" action="{{ route('users.update', $user->id) }}">
                 @csrf
                 @method('PUT')
-                <div class="modal-header">
+                <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title">
-                        <i class="bi bi-pencil-square"></i>
-                        Edit Data Warga
+                        <i class="bi bi-pencil-square"></i> Edit Data Warga
                     </h5>
-                    <button type="button" class="btn-close" onclick="closeModal('editModal{{ $user->id }}')"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -246,11 +142,11 @@
                             <input type="email" name="email" class="form-control" value="{{ $user->email }}" required>
                         </div>
                     </div>
+                    
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">NIK (16 digit) <span class="text-danger">*</span></label>
                             <input type="text" name="nik" class="form-control" value="{{ $user->nik }}" maxlength="16" pattern="[0-9]{16}" required>
-                            <small class="text-muted">Harus tepat 16 digit angka</small>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Role <span class="text-danger">*</span></label>
@@ -260,14 +156,61 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tempat Lahir <span class="text-danger">*</span></label>
+                            <input type="text" name="tempat_lahir" class="form-control" value="{{ $user->tempat_lahir }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tanggal Lahir <span class="text-danger">*</span></label>
+                            <input type="date" name="tanggal_lahir" class="form-control" value="{{ $user->tanggal_lahir->format('Y-m-d') }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
+                            <select name="jenis_kelamin" class="form-select" required>
+                                <option value="Laki-laki" {{ $user->jenis_kelamin === 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                <option value="Perempuan" {{ $user->jenis_kelamin === 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Agama <span class="text-danger">*</span></label>
+                            <select name="agama" class="form-select" required>
+                                @foreach(['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'] as $agama)
+                                <option value="{{ $agama }}" {{ $user->agama === $agama ? 'selected' : '' }}>{{ $agama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Pekerjaan <span class="text-danger">*</span></label>
+                            <input type="text" name="pekerjaan" class="form-control" value="{{ $user->pekerjaan }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Status Perkawinan <span class="text-danger">*</span></label>
+                            <select name="status_perkawinan" class="form-select" required>
+                                @foreach(['Belum Kawin', 'Kawin', 'Cerai Hidup', 'Cerai Mati'] as $status)
+                                <option value="{{ $status }}" {{ $user->status_perkawinan === $status ? 'selected' : '' }}>{{ $status }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="mb-3">
-                        <label class="form-label">Alamat <span class="text-danger">*</span></label>
+                        <label class="form-label">Alamat Lengkap <span class="text-danger">*</span></label>
                         <textarea name="alamat" class="form-control" rows="3" required>{{ $user->alamat }}</textarea>
                     </div>
+
                     <hr>
-                    <p class="text-muted small">
+                    <p class="text-muted small mb-2">
                         <i class="bi bi-info-circle"></i> Kosongkan password jika tidak ingin mengubah
                     </p>
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Password Baru</label>
@@ -280,7 +223,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('editModal{{ $user->id }}')">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle"></i> Batal
                     </button>
                     <button type="submit" class="btn btn-primary">
@@ -293,518 +236,145 @@
 </div>
 @endforeach
 
-<!-- Delete Form (Hidden) -->
+<!-- Delete Form -->
 <form id="deleteForm" method="POST" style="display: none;">
     @csrf
     @method('DELETE')
 </form>
 
 <style>
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
+.dashboard-header { 
+    margin-bottom: 2rem; 
 }
-
-.page-subtitle {
-    color: #64748b;
-    margin: 0.5rem 0 0 0;
-    font-size: 0.95rem;
+.page-title { 
+    font-size: 1.8rem; 
+    font-weight: bold; 
+    color: #0f172a;
 }
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
+.page-subtitle { 
+    color: #64748b; 
+    margin: 0.5rem 0 0.25rem 0;
 }
-
-.stat-card {
-    background: white;
-    border-radius: 16px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+.stats-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 1rem; 
 }
-
+.stat-card { 
+    background: white; 
+    padding: 1.5rem; 
+    border-radius: 12px; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
 .stat-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
 }
-
 .stat-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     margin-bottom: 1rem;
 }
-
 .stat-info .stat-icon {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
 }
-
 .stat-success .stat-icon {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, #10b981, #059669);
     color: white;
 }
-
 .stat-warning .stat-icon {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    background: linear-gradient(135deg, #f59e0b, #d97706);
     color: white;
 }
-
-.stat-number {
-    font-size: 2rem;
-    font-weight: 700;
+.stat-number { 
+    font-size: 2rem; 
+    font-weight: bold; 
     color: #0f172a;
 }
-
-.stat-label {
+.stat-label { 
     color: #64748b;
-    font-size: 0.95rem;
     font-weight: 500;
 }
-
-.stat-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-top: 1rem;
+.modern-card { 
+    border: none; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    overflow: hidden;
 }
-
-.badge-info {
-    background: #dbeafe;
-    color: #1e40af;
-}
-
-.badge-success {
-    background: #d1fae5;
-    color: #065f46;
-}
-
-.badge-warning {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.modern-card {
-    border: none;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    border-radius: 16px;
-}
-
-.table-modern {
-    margin: 0;
-}
-
-.table-modern thead {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+.card-header {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
     color: white;
+    padding: 1.25rem;
 }
-
+.table-modern { 
+    margin: 0; 
+}
+.table-modern thead { 
+    background: #f8fafc;
+    color: #0f172a;
+}
 .table-modern thead th {
-    border: none;
-    padding: 1rem;
     font-weight: 600;
     font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    padding: 1rem;
 }
-
 .table-modern tbody tr {
     border-bottom: 1px solid #f1f5f9;
-    transition: all 0.2s ease;
+    transition: background 0.2s ease;
 }
-
 .table-modern tbody tr:hover {
     background: #f8fafc;
 }
-
 .table-modern tbody td {
     padding: 1rem;
-    vertical-align: middle;
 }
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1rem;
-}
-
-.user-name {
-    font-weight: 600;
-    color: #0f172a;
-}
-
-.user-email {
-    color: #64748b;
-    font-size: 0.85rem;
-}
-
-.nik-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    background: #f1f5f9;
-    padding: 0.35rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-family: monospace;
-    font-weight: 600;
-}
-
-.alamat-text {
-    color: #64748b;
-    font-size: 0.9rem;
-}
-
-.badge-modern {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.5rem 0.85rem;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.8rem;
-}
-
-.badge-modern-danger {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.badge-modern-primary {
-    background: #dbeafe;
-    color: #1e40af;
-}
-
-.date-display {
-    font-size: 0.9rem;
-    color: #0f172a;
-    margin-bottom: 0.25rem;
-}
-
-.time-display {
-    font-size: 0.75rem;
+.empty-state { 
+    text-align: center; 
+    padding: 3rem;
     color: #64748b;
 }
-
-.empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-}
-
-.empty-icon i {
-    font-size: 5rem;
-    color: #cbd5e1;
-}
-
-.empty-state h3 {
-    color: #0f172a;
-    margin: 1rem 0 0.5rem;
-    font-weight: 700;
-}
-
-.empty-state p {
-    color: #64748b;
-}
-
-/* CUSTOM MODAL STYLES - TANPA BOOTSTRAP */
-.custom-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100000;
-    overflow-y: auto;
-}
-
-.custom-modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-}
-
-.custom-modal-dialog {
-    position: relative;
-    margin: 1.75rem auto;
-    max-width: 500px;
-    z-index: 2;
-    animation: modalSlideIn 0.3s ease;
-}
-
-.custom-modal-lg {
-    max-width: 800px;
-}
-
-@keyframes modalSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.custom-modal-content {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-.modern-modal .modal-header {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    color: white;
-    border-radius: 16px 16px 0 0;
+.modal-content {
+    border-radius: 12px;
     border: none;
-    padding: 1.25rem 1.5rem;
 }
-
-.modern-modal .modal-title {
-    margin: 0;
-    font-weight: 700;
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+.modal-header {
+    border-radius: 12px 12px 0 0;
 }
-
-.modern-modal .modal-body {
-    padding: 2rem;
-}
-
-.modern-modal .modal-footer {
-    border-top: 1px solid #e2e8f0;
-    padding: 1.25rem 2rem;
-}
-
-.user-detail-card {
-    text-align: center;
-}
-
-.user-avatar-large {
-    width: 100px;
-    height: 100px;
-    border-radius: 20px;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 3rem;
-    margin: 0 auto;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-}
-
-.info-grid {
-    display: grid;
-    gap: 1rem;
-}
-
-.info-item {
-    background: #f8fafc;
-    padding: 1rem;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.info-label {
-    font-weight: 600;
-    color: #64748b;
-    font-size: 0.85rem;
-}
-
-.info-value {
-    color: #0f172a;
-    font-weight: 500;
-    text-align: right;
-}
-
-@media (max-width: 768px) {
-    .dashboard-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .table-modern {
-        font-size: 0.85rem;
-    }
-    
-    .btn-group {
-        flex-direction: column;
-    }
-    
-    .custom-modal-dialog {
-        margin: 0.5rem;
-        max-width: calc(100% - 1rem);
-    }
+.btn-group-sm .btn {
+    padding: 0.35rem 0.6rem;
 }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Search Functionality
-    const searchInput = document.getElementById('searchTable');
-    if (searchInput) {
-        searchInput.addEventListener('keyup', function() {
-            const value = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#usersTable tbody tr');
-            
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(value) ? '' : 'none';
-            });
-        });
-    }
-
-    // Filter by Role
-    const filterRole = document.getElementById('filterRole');
-    if (filterRole) {
-        filterRole.addEventListener('change', function() {
-            const value = this.value;
-            const rows = document.querySelectorAll('#usersTable tbody tr');
-            
-            rows.forEach(row => {
-                if (!value || row.dataset.role === value) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-    }
-    
-    // Remove any leftover Bootstrap backdrops on page load
-    cleanupBackdrops();
+// Search functionality
+document.getElementById('searchTable')?.addEventListener('keyup', function() {
+    const value = this.value.toLowerCase();
+    document.querySelectorAll('#usersTable tbody tr').forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(value) ? '' : 'none';
+    });
 });
 
-// Function to open view modal
-function openViewModal(userId) {
-    closeAllModals();
-    cleanupBackdrops();
-    
-    const modal = document.getElementById('viewModal' + userId);
-    if (modal) {
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-// Function to open edit modal
+// Open Edit Modal
 function openEditModal(userId) {
-    closeAllModals();
-    cleanupBackdrops();
-    
-    const modal = document.getElementById('editModal' + userId);
-    if (modal) {
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
+    const modal = new bootstrap.Modal(document.getElementById('editModal' + userId));
+    modal.show();
 }
 
-// Function to close specific modal
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'none';
-    }
-    
-    // Check if all modals are closed
-    const allModals = document.querySelectorAll('.custom-modal');
-    const anyVisible = Array.from(allModals).some(m => m.style.display === 'block');
-    
-    if (!anyVisible) {
-        document.body.style.overflow = '';
-    }
-    
-    cleanupBackdrops();
-}
-
-// Function to close all modals
-function closeAllModals() {
-    const modals = document.querySelectorAll('.custom-modal');
-    modals.forEach(modal => {
-        modal.style.display = 'none';
-    });
-    document.body.style.overflow = '';
-    cleanupBackdrops();
-}
-
-// Function to aggressively cleanup Bootstrap backdrops
-function cleanupBackdrops() {
-    // Remove any Bootstrap modal backdrops
-    const backdrops = document.querySelectorAll('.modal-backdrop');
-    backdrops.forEach(backdrop => {
-        backdrop.remove();
-    });
-    
-    // Remove modal-open class from body
-    document.body.classList.remove('modal-open');
-    
-    // Reset body padding
-    document.body.style.paddingRight = '';
-}
-
-// Confirm Delete Function
+// Confirm Delete
 function confirmDelete(userId, userName) {
-    closeAllModals();
-    cleanupBackdrops();
-    
     if (confirm(`Apakah Anda yakin ingin menghapus warga "${userName}"?\n\nData yang dihapus tidak dapat dikembalikan!`)) {
         const form = document.getElementById('deleteForm');
         form.action = `/users/${userId}`;
         form.submit();
     }
 }
-
-// Close modal on ESC key
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closeAllModals();
-    }
-});
-
-// Cleanup on page unload
-window.addEventListener('beforeunload', function() {
-    cleanupBackdrops();
-});
-
-// Periodic cleanup (setiap 1 detik cek backdrop yang tersisa)
-setInterval(cleanupBackdrops, 1000);
 </script>
 @endsection

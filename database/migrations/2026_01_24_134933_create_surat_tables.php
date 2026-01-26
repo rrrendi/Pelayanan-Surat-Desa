@@ -1,4 +1,3 @@
-// database/migrations/2025_01_24_000001_create_surat_tables.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
