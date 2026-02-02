@@ -8,15 +8,22 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\SuratLampiran;
+use Illuminate\Support\Facades\Storage;
 
 class SuratController extends Controller
 {
+    public function editProfile()
+    {
+        $user = Auth::user();
+        return view('profile', compact('user'));
+    }
     public function dashboard()
     {
         $user = Auth::user();
-        
+
         if ($user->role === 'admin') {
-            $surat = PengajuanSurat::with(['user', 'suratJenis'])
+            $surat = PengajuanSurat::with(['user', 'suratJenis', 'lampiran'])
                 ->orderBy('created_at', 'desc')
                 ->get();
         } else {
@@ -37,21 +44,43 @@ class SuratController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi dengan pengecekan NIK duplikat
         $request->validate([
             'surat_jenis_id' => 'required|exists:surat_jenis,id',
             'keterangan' => 'required|string|max:1000',
+            // Validasi Lampiran: Array, Maks 5 file, Tipe PDF/Gambar, Maks 2MB per file
+            'lampiran' => 'array|max:5',
+            'lampiran.*' => 'file|mimes:pdf,jpg,jpeg,png|max:2048'
+        ], [
+            'lampiran.max' => 'Maksimal lampiran yang diperbolehkan adalah 5 file.',
+            'lampiran.*.max' => 'Ukuran file tidak boleh lebih dari 2MB.',
+            'lampiran.*.mimes' => 'Format file harus PDF, JPG, JPEG, atau PNG.'
         ]);
 
-        PengajuanSurat::create([
+        // 1. Simpan Data Surat Utama
+        $surat = PengajuanSurat::create([
             'user_id' => Auth::id(),
             'surat_jenis_id' => $request->surat_jenis_id,
             'keterangan' => $request->keterangan,
             'status' => 'pending',
         ]);
 
+        // 2. Proses Upload Lampiran (Jika Ada)
+        if ($request->hasFile('lampiran')) {
+            foreach ($request->file('lampiran') as $file) {
+                // Simpan ke folder 'public/lampiran'
+                $path = $file->store('lampiran', 'public');
+
+                // Simpan path ke database
+                SuratLampiran::create([
+                    'pengajuan_surat_id' => $surat->id,
+                    'file_path' => $path,
+                    'nama_file' => $file->getClientOriginalName(),
+                ]);
+            }
+        }
+
         return redirect()->route('dashboard')
-            ->with('success', 'Pengajuan surat berhasil diajukan!');
+            ->with('success', 'Pengajuan surat berhasil diajukan beserta lampirannya!');
     }
 
     public function updateStatus(Request $request, $id)
@@ -111,7 +140,7 @@ class SuratController extends Controller
             'alamat' => $request->alamat,
         ]);
 
-        return redirect()->back()->with('success', 'Profil berhasil diperbarui!');
+        return redirect()->route('profile.edit')->with('success', 'Profil berhasil diperbarui!');
     }
 
     // Method untuk validasi NIK secara real-time (AJAX)

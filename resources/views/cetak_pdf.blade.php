@@ -2,277 +2,197 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>{{ $surat->suratJenis->nama_surat }}</title>
+    <title>Surat Keterangan - {{ $surat->suratJenis->nama_surat }}</title>
     <style>
+        /* Format Kertas A4 */
         @page {
-            margin: 2cm;
+            margin: 2.5cm 2.5cm 2.5cm 2.5cm;
+            size: A4;
         }
-
+        
         body {
             font-family: 'Times New Roman', Times, serif;
             font-size: 12pt;
-            line-height: 1.8;
+            line-height: 1.5;
             color: #000;
         }
 
-        .header-wrapper {
-            border-bottom: 4px double #000;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-        }
-
+        /* Kop Surat */
         .kop-surat {
             text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            border-bottom: 3px double #000; /* Garis ganda di bawah kop */
+            padding-bottom: 10px;
         }
 
-        .kop-surat h2 {
-            margin: 0;
-            font-size: 20pt;
+        .logo {
+            width: 75px;
+            height: auto;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .kop-text {
+            margin-left: 80px; /* Memberi ruang untuk logo */
+            margin-right: 0px;
+        }
+
+        .pemerintah {
+            font-size: 14pt;
+            font-weight: bold;
             text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 1px;
+            margin: 0;
         }
 
-        .kop-surat h3 {
-            margin: 3px 0;
-            font-size: 16pt;
+        .desa {
+            font-size: 18pt;
             font-weight: bold;
+            text-transform: uppercase;
+            margin: 5px 0;
         }
 
-        .kop-surat p {
-            margin: 2px 0;
-            font-size: 11pt;
+        .alamat {
+            font-size: 10pt;
+            font-style: italic;
+            margin: 0;
+        }
+
+        /* Isi Surat */
+        .judul-surat {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .judul-surat h3 {
+            text-decoration: underline;
+            text-transform: uppercase;
+            margin: 0;
+            font-size: 14pt;
         }
 
         .nomor-surat {
             text-align: center;
-            margin: 25px 0;
-        }
-
-        .nomor-surat h4 {
-            text-decoration: underline;
-            font-weight: bold;
-            font-size: 14pt;
-            margin: 5px 0;
-            text-transform: uppercase;
-        }
-
-        .nomor-surat p {
-            margin: 3px 0;
             font-size: 11pt;
+            margin-top: 2px;
         }
 
-        .isi-surat {
+        .paragraf {
             text-align: justify;
-            margin: 25px 0;
-        }
-
-        .pembuka {
-            text-indent: 40px;
+            text-indent: 50px; /* Menjorok ke dalam */
             margin-bottom: 15px;
         }
 
-        .data-table {
-            margin: 20px 0 20px 40px;
-            border-collapse: collapse;
+        /* Tabel Biodata (Titik dua sejajar) */
+        .table-biodata {
+            width: 100%;
+            margin-left: 20px;
+            margin-bottom: 20px;
         }
-
-        .data-table td {
-            padding: 5px 10px;
+        .table-biodata td {
             vertical-align: top;
+            padding: 3px 0;
         }
+        .label-col { width: 150px; }
+        .sep-col { width: 20px; text-align: center; }
 
-        .data-table td:first-child {
-            width: 180px;
-            font-weight: 500;
-        }
-
-        .data-table td:nth-child(2) {
-            width: 20px;
-            text-align: center;
-        }
-
-        .data-table td:last-child {
-            font-weight: bold;
-        }
-
-        .keperluan {
-            background: #f5f5f5;
-            padding: 15px;
-            border-left: 4px solid #333;
-            margin: 20px 0;
-        }
-
-        .keperluan strong {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 11pt;
-        }
-
-        .penutup {
-            text-indent: 40px;
-            margin-top: 20px;
-        }
-
-        .ttd-section {
-            margin-top: 40px;
-        }
-
-        .ttd {
+        /* Tanda Tangan */
+        .tanda-tangan {
             float: right;
-            text-align: center;
             width: 250px;
-        }
-
-        .ttd p {
-            margin: 5px 0;
-        }
-
-        .ttd-space {
-            margin: 70px 0;
-        }
-
-        .ttd-name {
-            font-weight: bold;
-            text-decoration: underline;
-        }
-
-        .footer {
-            clear: both;
-            margin-top: 80px;
-            padding-top: 15px;
-            border-top: 1px solid #ccc;
-        }
-
-        .footer-note {
-            font-size: 9pt;
-            font-style: italic;
-            color: #666;
-        }
-
-        .footer-info {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 9pt;
-            color: #666;
-        }
-
-        .watermark {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 80pt;
-            color: rgba(0, 0, 0, 0.05);
-            z-index: -1;
-            font-weight: bold;
+            text-align: center;
+            margin-top: 50px;
         }
     </style>
 </head>
 <body>
-    <div class="watermark">ASLI</div>
 
-    <div class="header-wrapper">
-        <div class="kop-surat">
-            <h2>Pemerintah Desa Sayati</h2>
-            <h3>Kecamatan Margahayu</h3>
-            <p><strong>Kabupaten Bandung - Provinsi Jawa Barat</strong></p>
-            <p>Alamat: Jl. Kantor Desa No. 1, Sayati, Margahayu, Bandung 40287</p>
-            <p>Telp: (022) 12345678 | Email: info@desasayati.go.id</p>
+    <div class="kop-surat">
+        <img src="{{ public_path('images/logokap.png') }}" class="logo" alt="Logo">
+        <div class="kop-text">
+            <div class="pemerintah">PEMERINTAH KABUPATEN BANDUNG</div>
+            <div class="pemerintah">KECAMATAN MARGAASIH</div>
+            <div class="desa">DESA SAYATI</div>
+            <div class="alamat">
+                Jl. Raya Sayati No. 123, Kec. Margaasih, Kab. Bandung - Jawa Barat<br>
+                Email: info@desasayati.go.id | Telp: (022) 1234567
+            </div>
         </div>
     </div>
 
-    <div class="nomor-surat">
-        <h4>{{ strtoupper($surat->suratJenis->nama_surat) }}</h4>
-        <p>Nomor: {{ str_pad($surat->id, 4, '0', STR_PAD_LEFT) }}/SK-{{ strtoupper(substr($surat->suratJenis->nama_surat, 0, 2)) }}/{{ date('m') }}/{{ date('Y') }}</p>
+    <div class="judul-surat">
+        <h3>{{ $surat->suratJenis->nama_surat }}</h3>
+        <div class="nomor-surat">Nomor: 470 / {{ str_pad($surat->id, 3, '0', STR_PAD_LEFT) }} / DS / {{ date('Y') }}</div>
     </div>
 
-    <div class="isi-surat">
-        <p class="pembuka">
-            Yang bertanda tangan di bawah ini Kepala Desa Sayati, Kecamatan Margahayu, 
-            Kabupaten Bandung, Provinsi Jawa Barat, dengan ini menerangkan bahwa:
-        </p>
-
-        <table class="data-table">
-            <tr>
-                <td>Nama Lengkap</td>
-                <td>:</td>
-                <td>{{ strtoupper($surat->user->name) }}</td>
-            </tr>
-            <tr>
-                <td>NIK</td>
-                <td>:</td>
-                <td>{{ $surat->user->nik }}</td>
-            </tr>
-            <tr>
-                <td>Tempat/Tanggal Lahir</td>
-                <td>:</td>
-                <td>{{ $surat->user->tempat_lahir }}, {{ $surat->user->tanggal_lahir->isoFormat('D MMMM Y') }}</td>
-            </tr>
-            <tr>
-                <td>Jenis Kelamin</td>
-                <td>:</td>
-                <td>{{ $surat->user->jenis_kelamin }}</td>
-            </tr>
-            <tr>
-                <td>Pekerjaan</td>
-                <td>:</td>
-                <td>{{ $surat->user->pekerjaan }}</td>
-            </tr>
-            <tr>
-                <td>Agama</td>
-                <td>:</td>
-                <td>{{ $surat->user->agama }}</td>
-            </tr>
-            <tr>
-                <td>Status Perkawinan</td>
-                <td>:</td>
-                <td>{{ $surat->user->status_perkawinan }}</td>
-            </tr>
-            <tr>
-                <td>Alamat</td>
-                <td>:</td>
-                <td>{{ $surat->user->alamat }}</td>
-            </tr>
-        </table>
-
-        <p class="pembuka">
-            Adalah benar warga Desa Sayati yang berdomisili di alamat tersebut di atas 
-            dan terdaftar dalam Administrasi Kependudukan Desa Sayati.
-        </p>
-
-        <div class="keperluan">
-            <strong>Keperluan:</strong>
-            {{ $surat->keterangan }}
-        </div>
-
-        <p class="penutup">
-            Demikian surat keterangan ini dibuat dengan sebenarnya untuk dapat 
-            dipergunakan sebagaimana mestinya. Atas perhatian dan kerjasamanya 
-            diucapkan terima kasih.
-        </p>
+    <div class="paragraf">
+        Yang bertanda tangan di bawah ini Kepala Desa Sayati, Kecamatan Margaasih, Kabupaten Bandung, menerangkan dengan sebenarnya bahwa:
     </div>
 
-    <div class="ttd-section">
-        <div class="ttd">
-            <p>Sayati, {{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y') }}</p>
-            <p><strong>Kepala Desa Sayati</strong></p>
-            <div class="ttd-space"></div>
-            
-            <p class="ttd-name">Fijia Al Hadiansyah</p>
-            <p style="font-size: 10pt;">NIP. 19800101 200501 1 001</p>
-        </div>
+    <table class="table-biodata">
+        <tr>
+            <td class="label-col">Nama Lengkap</td>
+            <td class="sep-col">:</td>
+            <td><b>{{ strtoupper($surat->user->name) }}</b></td>
+        </tr>
+        <tr>
+            <td class="label-col">NIK</td>
+            <td class="sep-col">:</td>
+            <td>{{ $surat->user->nik }}</td>
+        </tr>
+        <tr>
+            <td class="label-col">Tempat/Tgl Lahir</td>
+            <td class="sep-col">:</td>
+            <td>{{ $surat->user->tempat_lahir }}, {{ $surat->user->tanggal_lahir->format('d-m-Y') }}</td>
+        </tr>
+        <tr>
+            <td class="label-col">Jenis Kelamin</td>
+            <td class="sep-col">:</td>
+            <td>{{ $surat->user->jenis_kelamin }}</td>
+        </tr>
+        <tr>
+            <td class="label-col">Pekerjaan</td>
+            <td class="sep-col">:</td>
+            <td>{{ $surat->user->pekerjaan }}</td>
+        </tr>
+        <tr>
+            <td class="label-col">Agama</td>
+            <td class="sep-col">:</td>
+            <td>{{ $surat->user->agama }}</td>
+        </tr>
+        <tr>
+            <td class="label-col">Status Perkawinan</td>
+            <td class="sep-col">:</td>
+            <td>{{ $surat->user->status_perkawinan }}</td>
+        </tr>
+        <tr>
+            <td class="label-col">Alamat</td>
+            <td class="sep-col">:</td>
+            <td>{{ $surat->user->alamat }}</td>
+        </tr>
+    </table>
+
+    <div class="paragraf">
+        Orang tersebut di atas adalah benar-benar warga penduduk Desa Sayati yang berdomisili di alamat tersebut. Berdasarkan data yang ada, surat ini diterbitkan untuk keperluan:
     </div>
 
-    <div class="footer">
-        <div class="footer-note">
-            * Surat ini dicetak secara elektronik melalui Sistem Pelayanan Surat Desa dan sah tanpa tanda tangan basah.
-        </div>
-        <div class="footer-info">
-            <div>Dicetak pada: {{ \Carbon\Carbon::now()->format('d/m/Y H:i:s') }} WIB</div>
-            <div>Kode Verifikasi: {{ strtoupper(substr(md5($surat->id . $surat->created_at), 0, 12)) }}</div>
-        </div>
+    <div style="margin: 10px 40px; padding: 10px; border: 1px solid #000; background-color: #f9f9f9; font-style: italic;">
+        "{{ $surat->keterangan }}"
     </div>
+
+    <div class="paragraf">
+        Demikian surat keterangan ini kami buat dengan sebenarnya agar dapat dipergunakan sebagaimana mestinya.
+    </div>
+
+    <div class="tanda-tangan">
+        <div>Sayati, {{ date('d F Y') }}</div>
+        <div style="margin-bottom: 80px;">Kepala Desa Sayati</div>
+        
+        <div style="font-weight: bold; text-decoration: underline;">H. KEPALA DESA</div>
+        <div>NIP. 19700101 200003 1 001</div>
+    </div>
+
 </body>
 </html>

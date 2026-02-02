@@ -37,7 +37,8 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('surat.store') }}" id="formPengajuan">
+                    <form method="POST" action="{{ route('surat.store') }}" id="formPengajuan"
+                        enctype="multipart/form-data">
                         @csrf
 
                         <!-- Section 1: Informasi Pemohon -->
@@ -142,6 +143,25 @@
                                 <div class="char-counter">
                                     <span id="charCount">0</span> / 1000 karakter
                                 </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label-modern">
+                                    <i class="bi bi-paperclip"></i> Lampiran Dokumen (Opsional)
+                                </label>
+
+                                <input type="file" name="lampiran[]" class="form-control form-control-modern"
+                                    id="lampiranInput" multiple accept=".pdf,.jpg,.jpeg,.png">
+
+                                <div class="form-text mt-2 text-muted">
+                                    <small>
+                                        <i class="bi bi-info-circle"></i> Maksimal 5 file. Format: PDF, JPG, PNG. Max
+                                        2MB/file.<br>
+                                        Biasanya berupa: Scan KTP, KK, atau Surat Pengantar RT/RW.
+                                    </small>
+                                </div>
+
+                                <ul id="fileList" class="mt-2 small text-primary"></ul>
                             </div>
 
                             <div class="info-box">
@@ -970,6 +990,26 @@
                     btnSubmit.disabled = true;
                     btnSubmit.innerHTML = '<i class="bi bi-hourglass-split"></i> Mengirim...';
                 });
+            }
+        });
+
+        document.getElementById('lampiranInput').addEventListener('change', function (e) {
+            const files = e.target.files;
+            const maxFiles = 5;
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = ''; // Reset list
+
+            if (files.length > maxFiles) {
+                alert('Maksimal hanya boleh 5 file! Silakan pilih ulang.');
+                this.value = ''; // Reset input
+                return;
+            }
+
+            // Tampilkan nama file yang dipilih
+            for (let i = 0; i < files.length; i++) {
+                const li = document.createElement('li');
+                li.textContent = '📄 ' + files[i].name;
+                fileList.appendChild(li);
             }
         });
     </script>

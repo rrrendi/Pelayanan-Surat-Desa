@@ -529,7 +529,7 @@
                         </div>
                     </div>
                     
-                    <h1>Sistem Surat Desa Sayati</h1>
+                    <h1>Sistem Pelayanan Desa Sayati</h1>
                     <p>Solusi Digital Modern untuk Pelayanan Administrasi Desa yang Cepat, Mudah, dan Terpercaya</p>
 
                     <div class="features">

@@ -24,24 +24,26 @@ Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('ch
 // Protected Routes
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [SuratController::class, 'dashboard'])->name('dashboard');
-    
+
     // Surat Routes (Warga)
     Route::middleware('warga')->group(function () {
         Route::get('/surat/create', [SuratController::class, 'create'])->name('surat.create');
         Route::post('/surat/store', [SuratController::class, 'store'])->name('surat.store');
+        Route::get('/profile', [SuratController::class, 'editProfile'])->name('profile.edit');
+        Route::put('/profile', [SuratController::class, 'updateProfile'])->name('profile.update');
     });
 
     // Admin Routes
     Route::middleware('admin')->group(function () {
         Route::post('/surat/{id}/update-status', [SuratController::class, 'updateStatus'])->name('surat.updateStatus');
-        
+
         // User Management (HANYA index, edit, update, destroy - TANPA create & store)
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     });
-    
+
     // Cetak PDF (Both Admin & Warga)
     Route::get('/surat/{id}/cetak', [SuratController::class, 'cetakPdf'])->name('surat.cetak');
 });

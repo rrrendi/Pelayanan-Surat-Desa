@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Sistem Pelayanan Surat Desa Sayati')</title>
+    <title>@yield('title', 'Sistem Pelayanan Desa Sayati')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
             --primary-green: #2d6a4f;
@@ -43,7 +46,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: 
+            background-image:
                 url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 15 L60 35 L80 35 L65 50 L70 70 L50 55 L30 70 L35 50 L20 35 L40 35 Z' fill='%23ffffff' opacity='0.03'/%3E%3C/svg%3E"),
                 url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='20' fill='none' stroke='%23ffffff' stroke-width='1' opacity='0.05'/%3E%3C/svg%3E");
             background-size: 100px 100px, 60px 60px;
@@ -54,8 +57,13 @@
         }
 
         @keyframes drift {
-            from { background-position: 0 0, 50px 50px; }
-            to { background-position: 100px 100px, 150px 150px; }
+            from {
+                background-position: 0 0, 50px 50px;
+            }
+
+            to {
+                background-position: 100px 100px, 150px 150px;
+            }
         }
 
         /* ==========================================
@@ -71,7 +79,8 @@
             position: relative;
             z-index: 1;
             border: 3px solid var(--gold);
-            isolation: isolate; /* PENTING: Buat stacking context baru */
+            isolation: isolate;
+            /* PENTING: Buat stacking context baru */
         }
 
         .content-wrapper::before {
@@ -399,8 +408,15 @@
         }
 
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .alert-success {
@@ -856,16 +872,18 @@
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-village">
         <div class="container">
             <a class="navbar-brand" href="{{ route('dashboard') }}">
                 <div class="brand-logo">
-                    <img src="{{ asset('images/logokap.png') }}" alt="Logo Desa" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ asset('images/logokap.png') }}" alt="Logo Desa"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <i class="bi bi-houses-fill" style="display: none;"></i>
                 </div>
                 <div class="brand-text">
-                    <span class="brand-name">Sistem Surat Desa Sayati</span>
+                    <span class="brand-name">Pelayanan Desa Sayati</span>
                     <span class="brand-tagline">Pelayanan Digital</span>
                 </div>
             </a>
@@ -875,43 +893,50 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto ms-lg-4">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                            href="{{ route('dashboard') }}">
                             <i class="bi bi-speedometer2"></i> Dashboard
                         </a>
                     </li>
                     @if(Auth::user()->role === 'warga')
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('surat.create') ? 'active' : '' }}" href="{{ route('surat.create') }}">
-                            <i class="bi bi-file-earmark-plus-fill"></i> Ajukan Surat
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('surat.create') ? 'active' : '' }}"
+                                href="{{ route('surat.create') }}">
+                                <i class="bi bi-file-earmark-plus-fill"></i> Ajukan Surat
+                            </a>
+                        </li>
                     @endif
                     @if(Auth::user()->role === 'admin')
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
-                            <i class="bi bi-people-fill"></i> Kelola Warga
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
+                                href="{{ route('users.index') }}">
+                                <i class="bi bi-people-fill"></i> Kelola Warga
+                            </a>
+                        </li>
                     @endif
                 </ul>
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            <div class="user-avatar-nav">
-                                {{ substr(Auth::user()->name, 0, 1) }}
-                            </div>
-                            <span>{{ Auth::user()->name }}</span>
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> {{ Auth::user()->name }}
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li class="dropdown-header">
-                                <div style="font-size: 0.85rem; color: rgba(255,255,255,0.8);">Login sebagai</div>
-                                <strong style="color: white; font-size: 1.1rem;">{{ ucfirst(Auth::user()->role) }}</strong>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+
                             <li>
-                                <form action="{{ route('logout') }}" method="POST" class="m-0">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    <i class="bi bi-person-gear"></i> Edit Profil
+                                </a>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="dropdown-item text-danger" style="border: none; background: none; width: 100%; text-align: left;">
+                                    <button type="submit" class="dropdown-item text-danger">
                                         <i class="bi bi-box-arrow-right"></i> Logout
                                     </button>
                                 </form>
@@ -926,19 +951,19 @@
     <div class="container">
         <div class="content-wrapper">
             @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show">
-                <i class="bi bi-check-circle-fill"></i>
-                <strong>Berhasil!</strong> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
+                <div class="alert alert-success alert-dismissible fade show">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <strong>Berhasil!</strong> {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
             @endif
 
             @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show">
-                <i class="bi bi-exclamation-triangle-fill"></i>
-                <strong>Error!</strong> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <strong>Error!</strong> {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
             @endif
 
             @yield('content')
@@ -950,14 +975,15 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <div class="footer-logo">
-                        <img src="{{ asset('images/logokap.png') }}" alt="Logo Desa" onerror="this.style.display='none';">
+                        <img src="{{ asset('images/logokap.png') }}" alt="Logo Desa"
+                            onerror="this.style.display='none';">
                     </div>
                     <div class="footer-text">
                         <h4>Sistem Surat Desa Sayati</h4>
                         <p>Melayani Dengan Hati untuk Desa yang Maju</p>
                     </div>
                 </div>
-                
+
                 <div class="footer-links">
                     <a href="https://sayati.desa.id/index.php/artikel/2018/1/9/profil-desa-sayati" class="footer-link">
                         <i class="bi bi-info-circle"></i> Tentang Kami
@@ -972,9 +998,10 @@
                         <i class="bi bi-envelope"></i> Kontak
                     </a>
                 </div>
-                
+
                 <div class="footer-copyright">
-                    <p>&copy; 2026 Sistem Surat Desa Sayati. Dibuat dengan <i class="bi bi-heart-fill text-danger"></i> untuk kemajuan desa</p>
+                    <p>&copy; 2026 Sistem Surat Desa Sayati. Dibuat dengan <i class="bi bi-heart-fill text-danger"></i>
+                        untuk kemajuan desa</p>
                 </div>
             </div>
         </div>
@@ -986,7 +1013,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     @yield('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Auto-hide alerts after 5 seconds
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
@@ -996,12 +1023,48 @@
                         bsAlert.close();
                     }
                 }, 5000);
-                
+
                 alert.addEventListener('closed.bs.alert', () => {
                     clearTimeout(timeoutId);
                 });
             });
         });
+
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: {!! json_encode(session('success')) !!}, // Aman dari tanda kutip/karakter aneh
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true, // Visual bar waktu berjalan (UX lebih baik)
+                heightAuto: false // Mencegah halaman "lompat" (scroll glitch)
+            });
+        @endif
+
+        // Notifikasi Error
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: {!! json_encode(session('error')) !!},
+                confirmButtonText: 'Oke, saya cek',
+                confirmButtonColor: '#ef4444', // Warna merah modern
+                heightAuto: false
+            });
+        @endif
+        
+        // Notifikasi Validasi Error (Jika ada error input form)
+        @if($errors->any())
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                html: '<ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>',
+                confirmButtonText: 'Tutup',
+                heightAuto: false
+            });
+        @endif
     </script>
 </body>
+
 </html>

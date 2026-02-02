@@ -28,4 +28,9 @@ class PengajuanSurat extends Model
     {
         return $this->belongsTo(SuratJenis::class);
     }
+
+    public function lampiran()
+    {
+        return $this->hasMany(SuratLampiran::class);
+    }
 }

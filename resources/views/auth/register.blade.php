@@ -351,7 +351,7 @@
         <div class="register-card">
             <div class="register-header">
                 <h1><i class="bi bi-person-plus-fill"></i> Daftar Akun Baru</h1>
-                <p>Lengkapi data diri Anda untuk mendaftar sebagai warga</p>
+                <p>Bergabung dengan Sistem Pelayanan Desa Sayati</p>
             </div>
 
             <div class="register-body">
