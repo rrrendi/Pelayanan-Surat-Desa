@@ -7,7 +7,7 @@ use App\Http\Controllers\SuratController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
-    return redirect('/login');
+    return view('welcome');
 });
 
 // Auth Routes
@@ -25,15 +25,17 @@ Route::post('/check-email', [RegisterController::class, 'checkEmail'])->name('ch
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [SuratController::class, 'dashboard'])->name('dashboard');
 
-    // Surat Routes (Warga)
+    // === PERBAIKAN: Rute Profil dipindahkan ke sini agar Admin dan Warga bisa akses ===
+    Route::get('/profile', [SuratController::class, 'editProfile'])->name('profile.edit');
+    Route::put('/profile', [SuratController::class, 'updateProfile'])->name('profile.update');
+
+    // Surat Routes (Khusus Warga)
     Route::middleware('warga')->group(function () {
         Route::get('/surat/create', [SuratController::class, 'create'])->name('surat.create');
         Route::post('/surat/store', [SuratController::class, 'store'])->name('surat.store');
-        Route::get('/profile', [SuratController::class, 'editProfile'])->name('profile.edit');
-        Route::put('/profile', [SuratController::class, 'updateProfile'])->name('profile.update');
     });
 
-    // Admin Routes
+    // Admin Routes (Khusus Admin)
     Route::middleware('admin')->group(function () {
         Route::post('/surat/{id}/update-status', [SuratController::class, 'updateStatus'])->name('surat.updateStatus');
 
